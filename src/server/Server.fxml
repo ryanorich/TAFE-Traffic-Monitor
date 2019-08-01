@@ -68,10 +68,10 @@
 		</HBox>
 		<Label text="Linked List:" />
 
-		<TextArea fx:id="txaLinkedList" prefHeight="100"/>
-		<Label text="Binary Tree:" />
+		<TextArea fx:id="txaLinkedList" prefHeight="100" wrapText="true"/>
+		<Label text="" />
 
-		<TextArea fx:id="txaBinaryTree" prefHeight="100"/>
+		<TextArea fx:id="txaBinaryTree" prefHeight="100" wrapText="true"/>
 		<HBox>
 			<BorderPane>
 				<top>

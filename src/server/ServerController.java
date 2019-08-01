@@ -167,5 +167,18 @@ public class ServerController
         tbvRecords.refresh();
     }
     
+    /**
+     * Displays data in a linked list
+     * @param rrll  A linked list
+     */
+    protected void DiplayLinkedList(RRLinkedList<Reading> rrll)
+    {
+        //TODO- Better Format this list
+        txaLinkedList.setText(" HEAD <==> ");
+        for (int i = 0; i<rrll.getCount(); i++)
+            txaLinkedList.appendText(rrll.get(i).toString()+" <==> ");
+        txaLinkedList.appendText("TAIL");
+    }
+    
 
 }
