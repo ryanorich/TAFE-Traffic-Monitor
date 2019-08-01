@@ -1,27 +1,71 @@
 package library;
 
-public class RRLinkedList 
+public class RRLinkedList <T>
 {
-	LLNode Head = null;
-	LLNode Tail = null;
+	LLNode head = null;
+	LLNode tail = null;
 	int count = 0;
 	
-	 public Object get(int n)
+
+	
+	 public T get(int n)
+	 {
+			if (n<0 || n>= count)
+			{
+				return null;
+			}
+			
+			
+			//for (int i = n, i>0; i++)
+			
+			return null;
+	 }
+	
+	 public void add(T t)
+	 {
+		 
+		 LLNode node = new LLNode(t);
+		 node.previous = tail;
+		 tail = node;
+		 count++;
+	 }
+	 
+	 public void remove()
+	 {
+		 if (count<=0) return;
+		 
+		 
+		 
+		 LLNode node = tail.previous;
+		 tail = node;
+		 tail.next = null;
+	 }
+	 
+	public void set(int n, T t) 
 	{
-		return new Object();
+		if (n<0 || n>= count)
+		{
+			return;
+		}
+		
+		LLNode node = new LLNode(t);
+		
+		
 		
 	}
 	
 	
-	public void set(int n, Object o)
+	
+	private class LLNode<T>
 	{
+		LLNode previous = null, next = null;
+		T t = null;
 		
-	}
-	
-	
-	
-	private class LLNode
-	{
+		LLNode (T t)
+		{
+			this.t = t;
+		}
+		
 		
 	}
 	
