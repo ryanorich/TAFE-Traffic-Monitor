@@ -4,12 +4,10 @@ import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Random;
 
-import com.sun.org.apache.xml.internal.security.utils.resolver.ResourceResolverSpi;
-
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.TableColumn.SortType;
+//import javafx.scene.control.TableColumn.SortType;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
@@ -19,7 +17,7 @@ import library.AllSorts.sortType;
 /**
  * The server for the IT Town Traffic Monitoring System.
  * This server connects to various monitoring systems, and
- * recieves and stores readings.
+ * receives and stores readings.
  * This server also carries out some demonstrations of 
  * sorting, linked lists, and tree data structures.
  * @author Ryan Rich
@@ -32,7 +30,7 @@ public class Server extends Application
         TIME, VEHICLES, VELOCITY
     };
 
-    private ArrayList<RRCompare<Reading>> SortOrderComparitors = new ArrayList();
+    private ArrayList<RRCompare<Reading>> SortOrderComparitors = new ArrayList<RRCompare<Reading>>();
     public ArrayList<Reading> readings = new ArrayList<Reading>();
     private RRLinkedList<Reading> LLReadings = new RRLinkedList<Reading>();
 
@@ -173,9 +171,11 @@ public class Server extends Application
      * For Testing - adds a reading consisting of random data
      * @param readings  The readings list stored by the server
      */
-    protected void addRandomReading(ArrayList readings)
+    protected void addRandomReading(ArrayList<Reading> readings)
     {
         Random rnd = new Random();
+        // TODO - Re-Implement the depreciated time constructor
+        @SuppressWarnings("deprecation")
         Reading r = new Reading(new Time(rnd.nextInt(24), rnd.nextInt(60), rnd.nextInt(60)), rnd.nextInt(20),
                 rnd.nextInt(4), rnd.nextInt(1000), rnd.nextInt(500), rnd.nextInt(50) + 50);
         readings.add(r);

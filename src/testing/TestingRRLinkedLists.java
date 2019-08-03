@@ -1,9 +1,15 @@
 package testing;
 
 import java.util.Random;
-
 import library.RRLinkedList;
 
+/**
+ * Testing the operation of the RRLinkedList class, using
+ * TestClass objects.
+ * 
+ * @author Ryan Rich
+ *
+ */
 public class TestingRRLinkedLists
 {
     Random rnd = new Random();
@@ -70,11 +76,7 @@ public class TestingRRLinkedLists
         rrll.add(2,getRandom());
         rrll.printList();
         rrll.printList2();
-    
     }
-    
-    
-
     private TestClass getRandom()
     {
 
@@ -83,22 +85,5 @@ public class TestingRRLinkedLists
         num = rnd.nextInt(10);
         str = "" + (char) ((int) 'a' + rnd.nextInt(26));
         return new TestClass(num, str);
-    }
-
-    private class TestClass
-    {
-        private int i;
-        private String s;
-
-        TestClass(int i, String s)
-        {
-            this.i = i;
-            this.s = s;
-        }
-
-        public String toString()
-        {
-            return "~" + i + "~" + s + "~";
-        }
     }
 }

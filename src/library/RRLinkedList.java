@@ -246,9 +246,9 @@ public class RRLinkedList<T>
      *
      * @param <T> The object class to be stored.
      */
-    private class LLNode<T>
+    private class LLNode<TN> //Note - Using <TN> instead of <T>, as it would 'hide' the origional T type.
     {
-        LLNode<T> previous = null, next = null;
+        LLNode<TN> previous = null, next = null;
         T t = null;
 
         LLNode(T t)

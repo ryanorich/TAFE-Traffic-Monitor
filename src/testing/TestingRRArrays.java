@@ -2,14 +2,18 @@ package testing;
 
 import java.util.ArrayList;
 import java.util.Random;
-
-import com.sun.org.apache.xml.internal.security.utils.resolver.ResourceResolverSpi;
-
-import library.*;
 import library.AllSorts.RRCompare;
 import library.AllSorts.sortType;
 import library.AllSorts;
+import testing.TestClass;
 
+/**
+ * Testing the operation of the RRArrays methods, using 
+ * the TestClass objects.
+ * 
+ * @author Ryan Rich
+ *
+ */
 public class TestingRRArrays
 {
 
@@ -97,22 +101,4 @@ public class TestingRRArrays
         System.out.println("Out3b: " + AllSorts.RRSort(in3, sortType.BUBBLE, new cmp3b()));
         System.out.println("In    :" + in3);
     }
-
-    private class TestClass
-    {
-        private int i;
-        private String s;
-
-        TestClass(int i, String s)
-        {
-            this.i = i;
-            this.s = s;
-        }
-
-        public String toString()
-        {
-            return "~" + i + "~" + s + "~";
-        }
-    }
-
 }

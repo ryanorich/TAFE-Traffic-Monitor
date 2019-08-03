@@ -3,14 +3,22 @@ package testing;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+/**
+ * Class for testing the relative speed of using Array Lists
+ * in methods, compared to casting to arrays to carry out work 
+ * then back again.
+ * 
+ * @author ryan
+ *
+ */
 public class SpeedTest
 {
     int ITTERA = 2, ITTERB=10000000;
     SpeedTest()
     {
-        ArrayList<testData> aL10 = new ArrayList();
-        ArrayList<testData> aL100 = new ArrayList();
-        ArrayList<testData> aL1000 = new ArrayList();
+        ArrayList<testData> aL10 = new ArrayList<testData>();
+        ArrayList<testData> aL100 = new ArrayList<testData>();
+        ArrayList<testData> aL1000 = new ArrayList<testData>();
         
         int i = 0;
         long alStart, alFinish, arStart, arFinish;
@@ -73,7 +81,7 @@ public class SpeedTest
     
     private <T> ArrayList<T>  ARShuffle(ArrayList<T> al)
     {
-       
+        @SuppressWarnings("unchecked")
         T[] ar = (T[])al.toArray();
         
         for (int j = 0; j<ITTERB; j++)
@@ -92,7 +100,7 @@ public class SpeedTest
     
     public static void main(String[] args)
     {
-        SpeedTest st = new SpeedTest();
+        new SpeedTest();
     }
     
 

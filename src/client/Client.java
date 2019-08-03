@@ -1,5 +1,11 @@
 package client;
 
+/**
+ * A Traffic Monitoring station, that connects to the server, and 
+ * provides traffic readings.
+ * 
+ * @author Ryan Rich
+ */
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;

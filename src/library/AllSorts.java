@@ -2,6 +2,13 @@ package library;
 
 import java.util.ArrayList;
 
+/**
+ * A selection of sorting algorithms.
+ * Uses and interface for carrying out comparisons, which determines sort order.
+ * 
+ * @author Ryan Rich
+ *
+ */
 public class AllSorts
 {
     public static enum sortType
@@ -15,7 +22,7 @@ public class AllSorts
     }
 
 
-    static public <T> ArrayList<T> RRSort(ArrayList<T> arr, sortType st, RRCompare cmp)
+    static public <T> ArrayList<T> RRSort(ArrayList<T> arr, sortType st, RRCompare<T> cmp)
     {
         
         ArrayList<T> out;
@@ -41,7 +48,7 @@ public class AllSorts
 
     }
 
-    static private <T> ArrayList<T> RRInsertSort(ArrayList<T> arr, RRCompare cmp)
+    static private <T> ArrayList<T> RRInsertSort(ArrayList<T> arr, RRCompare<T> cmp)
     {
         //System.out.println("Insert Sort");
         ArrayList<T> out = new ArrayList<T>(arr);
@@ -62,7 +69,7 @@ public class AllSorts
 
     }
 
-    static private <T> ArrayList<T> RRSelectionSort(ArrayList<T> arr, RRCompare cmp)
+    static private <T> ArrayList<T> RRSelectionSort(ArrayList<T> arr, RRCompare<T> cmp)
     {
         ArrayList<T> out = new ArrayList<T>(arr);
         T t;
@@ -92,7 +99,7 @@ public class AllSorts
         return out;
     }
     
-    static private <T> ArrayList<T> RRBubbleSort(ArrayList<T> arr, RRCompare cmp)
+    static private <T> ArrayList<T> RRBubbleSort(ArrayList<T> arr, RRCompare<T> cmp)
     {
         ArrayList<T> out = new ArrayList<T>(arr);
         T t;

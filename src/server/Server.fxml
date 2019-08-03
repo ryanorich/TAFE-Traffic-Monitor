@@ -1,3 +1,8 @@
+<!--
+    Defines the GUI View (V in MVC) for the Traffic Server.
+    
+    author: Ryan Rich
+-->
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.layout.AnchorPane?>

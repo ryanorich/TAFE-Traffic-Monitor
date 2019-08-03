@@ -2,6 +2,12 @@ package library;
 
 import java.sql.Time;
 
+/**
+ * Class containing the Reading data from traffic monitoring stations.
+ * 
+ * @author ryan
+ *
+ */
 public class Reading
 {
     
@@ -46,11 +52,14 @@ public class Reading
     {
         return averageVelocity;
     }
-
- 
     
+    /**
+     * Creates a blank reading object, with all parameters set to 0
+     */
+    @SuppressWarnings("deprecation")
     public Reading()
     {
+        // TODO - Re-Implement the depreciated time constructor
         time=new Time(0,0,0);
         location=0;
         noOfLanes=0;
@@ -59,7 +68,16 @@ public class Reading
         averageVelocity=0;
     }
 
-    
+    /**
+     * Cretes a new Reading object using provided data
+     * 
+     * @param time              The time of the readings
+     * @param location          The number of the reading station
+     * @param noOfLanes         The number of lanes
+     * @param totalNoVehicles   The total number of recored vehicles
+     * @param averageNoVehicles The average number of vehicles per lane (Typically (totalNoVehicles) / (noOfLanes)
+     * @param averageVelocity   The average velocity of all vehicles
+     */
     public Reading(Time time, int location, int noOfLanes, int totalNoVehicles, 
                 int averageNoVehicles, int averageVelocity)
     {
@@ -71,6 +89,11 @@ public class Reading
         this.averageVelocity = averageVelocity;
     }
     
+    /**
+     * Creates a new reading that is a copy of the one passed.
+     * 
+     * @param that  The reading to copy data from.
+     */
     Reading(Reading that)
 {
     this.time = that.time;
@@ -81,6 +104,11 @@ public class Reading
     this.averageVelocity = that.averageVelocity;
 }
     
+    /**
+     * Sets the reading data be a copy of the one passed.
+     * 
+     * @param that The reading to copy data from.
+     */
     void copyFrom(Reading that)
     {
         this.time = that.time;
@@ -91,6 +119,11 @@ public class Reading
         this.averageVelocity = that.averageVelocity;
     }
     
+    /**
+     * Copies the reading data to another reading.
+     * 
+     * @param that The reading to copy data to.
+     */
     void copyTo(Reading that)
     {
         that.time = this.time;
@@ -101,6 +134,9 @@ public class Reading
         that.averageVelocity = this.averageVelocity;
     }
     
+    /**
+     * Prints out the readign data as a string
+     */
     public String toString()
     {
         return time.toString() + " - " + location + " - " + noOfLanes + " - " + 

@@ -1,6 +1,6 @@
 package server;
 
-import java.sql.Time;
+//import java.sql.Time;
 import java.util.ArrayList;
 import javafx.collections.ObservableList;
 import javafx.beans.property.SimpleStringProperty;
@@ -13,6 +13,12 @@ import javafx.scene.control.TextArea;
 import library.*;
 import server.Server.sortOrder;
 
+/**
+ * The controller (C) between the FXML View(V) and the Server class (M) (in MVC).
+ * 
+ * @author Ryan Rich
+ *
+ */
 public class ServerController
 {
 
@@ -21,7 +27,7 @@ public class ServerController
     ObservableList<Reading> dispalyReadings;
 
     @FXML
-    private TableView tbvRecords;
+    private TableView<Reading> tbvRecords;
     @FXML
     private TextArea txaNotifications;
     @FXML
@@ -110,6 +116,12 @@ public class ServerController
         txaBinaryTree.appendText("Saving in Post-Order\n");
     }
 
+    /**
+     * Configures the TableView and populates the reading data.
+     * 
+     * @param readings The readings to display in the TableView
+     */
+    @SuppressWarnings("unchecked")
     protected void setupReadings(ArrayList<Reading> readings)
     {
         dispalyReadings = FXCollections.observableArrayList(readings);
@@ -131,19 +143,29 @@ public class ServerController
         tbvRecords.setItems(dispalyReadings);
     }
 
+    /**
+     * Passes a reference to the Server instance, to help pass messages back and forth.
+     * 
+     * @param s The instance of the Server class.
+     */
     protected void passReference(Server s)
     {
         server = s;
     }
 
+    /**
+     * Updates the readings displayed in the table
+     * 
+     * @param readings The readings to show in the Table View.
+     */
     protected void updateTable(ArrayList<Reading> readings)
     {
         dispalyReadings = FXCollections.observableArrayList(readings);
         tbvRecords.setItems(dispalyReadings);
     }
     
-    //Debug Buttons
     
+    //Debug Buttons
     @FXML
     protected void btnDBGAddRecord()
     {
@@ -168,8 +190,9 @@ public class ServerController
     }
     
     /**
-     * Displays data in a linked list
-     * @param rrll  A linked list
+     * Displays reading data in a linked list
+     * 
+     * @param rrll  A linked list of Record objects
      */
     protected void DiplayLinkedList(RRLinkedList<Reading> rrll)
     {

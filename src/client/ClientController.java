@@ -4,6 +4,12 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
+/**
+ * Controller for the Client FXML GUI
+ * 
+ * @author Ryan Rich
+ *
+ */
 public class ClientController
 {
     @FXML private Label txtTitle;
