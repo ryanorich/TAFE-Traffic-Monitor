@@ -2,9 +2,9 @@
     Defines the GUI View (V in MVC) for the Traffic Server.
     
     author: Ryan Rich
--->
-<?xml version="1.0" encoding="UTF-8"?>
 
+<?xml version="1.0" encoding="UTF-8"?>
+-->
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.layout.VBox?>
@@ -21,6 +21,7 @@
 
 <AnchorPane xmlns:fx="http://javafx.com/fxml/1"
 	fx:controller="server.ServerController">
+	
 	<VBox spacing="10">
 		<padding>
 			<Insets top="10" bottom="10" right="10" left="10" />
@@ -30,7 +31,7 @@
 		<HBox spacing="10">
 			<VBox>
 				<Label text="Traffic Monitoring Data" />
-				<!--  <ScrollPane hbarPolicy="NEVER">-->
+				
 				
 					<TableView fx:id="tbvRecords" editable="false"  >
 						<columns >
@@ -45,7 +46,7 @@
 
 					</TableView>
 
-				<!--  </ScrollPane> -->
+			
 				<Region prefHeight="10" />
 				<Label text="Sort By:" />
 				<HBox>
@@ -116,14 +117,14 @@
 			<Region prefWidth="20" />
 			<BorderPane>
 				<top>
-					<Label text="Diagram" />
+					<Label text="Diagram"  />
 				</top>
 				<left>
-					<Button text="Diaplay" />
+					<Button text="Diaplay" onAction="#btnDiagram"/>
 				</left>
 			</BorderPane>
 		</HBox>
-
+   
 	</VBox>
 
 </AnchorPane>

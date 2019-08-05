@@ -3,6 +3,7 @@ package server;
 //import java.sql.Time;
 import java.util.ArrayList;
 import javafx.collections.ObservableList;
+import javafx.application.Application;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
@@ -114,6 +115,16 @@ public class ServerController
     {
         System.out.println("Saving in Post-Order");
         txaBinaryTree.appendText("Saving in Post-Order\n");
+    }
+    
+    @FXML
+    private void btnDiagram(ActionEvent e)
+    {
+        System.out.println("Showing Diagram");
+        
+        txaBinaryTree.appendText("Showing Diagram\n");
+        Application.launch(testing.TestingCharts.class, new String[] {});
+        
     }
 
     /**
