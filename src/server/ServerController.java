@@ -1,16 +1,22 @@
 package server;
 
+import java.io.IOException;
 //import java.sql.Time;
 import java.util.ArrayList;
 import javafx.collections.ObservableList;
-import javafx.application.Application;
+//import javafx.application.Application;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import library.*;
 import server.Server.sortOrder;
 
@@ -118,12 +124,25 @@ public class ServerController
     }
     
     @FXML
-    private void btnDiagram(ActionEvent e)
+    private void btnDiagram(ActionEvent e) throws IOException
     {
         System.out.println("Showing Diagram");
         
         txaBinaryTree.appendText("Showing Diagram\n");
-        Application.launch(testing.TestingCharts.class, new String[] {});
+        //Application.launch(testing.TestingCharts.class, new String[] {});
+        
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("TreeDisplay.fxml"));
+        Parent parent = fxmlLoader.load();
+        TreeDisplayController treeDisplayController = fxmlLoader.<TreeDisplayController>getController();
+        //treeDisplayController.setAppMainObservableList(tvObservableList);
+        
+        treeDisplayController.showTree();
+        
+        Scene scene2 = new Scene(parent, 300, 200);
+        Stage stage2 = new Stage();
+        stage2.initModality(Modality.APPLICATION_MODAL);
+        stage2.setScene(scene2);
+        stage2.showAndWait();
         
     }
 

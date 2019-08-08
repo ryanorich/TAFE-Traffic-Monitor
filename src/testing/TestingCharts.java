@@ -10,6 +10,7 @@ import de.tesis.dynaware.grapheditor.model.GConnector;
 import de.tesis.dynaware.grapheditor.model.GModel;
 import de.tesis.dynaware.grapheditor.model.GNode;
 import de.tesis.dynaware.grapheditor.model.GraphFactory;
+import de.tesis.dynaware.grapheditor.model.GraphPackage;
 
 
 
@@ -43,13 +44,19 @@ public class TestingCharts extends Application
      
 
         GConnector input = GraphFactory.eINSTANCE.createGConnector();
+        
         GConnector output = GraphFactory.eINSTANCE.createGConnector();
-
-        input.setType("left-input");
-        output.setType("right-output");
-
+        GConnector output2 = GraphFactory.eINSTANCE.createGConnector();
+        input.setType("top-input");
+        
+        
+        
+        output.setType("bottom-output");
+        output2.setType("bottom-output");
+        
         node.getConnectors().add(input);
         node.getConnectors().add(output);
+        node.getConnectors().add(output2);
 
         return node;
     }
