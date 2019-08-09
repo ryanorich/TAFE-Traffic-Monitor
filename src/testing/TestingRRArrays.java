@@ -2,7 +2,7 @@ package testing;
 
 import java.util.ArrayList;
 import java.util.Random;
-import library.AllSorts.RRCompare;
+import library.RRCompare;
 import library.AllSorts.sortType;
 import library.AllSorts;
 import testing.TestClass;
@@ -79,7 +79,7 @@ public class TestingRRArrays
         System.out.println("In    :" + in2);
 
         // Implementing using classes that implement the c ompare function
-        class cmp3a implements AllSorts.RRCompare<TestClass>
+        class cmp3a implements RRCompare<TestClass>
         {
             public int compare(TestClass a, TestClass b)
             {
@@ -87,7 +87,7 @@ public class TestingRRArrays
             };
         }
 
-        class cmp3b implements AllSorts.RRCompare<TestClass>
+        class cmp3b implements RRCompare<TestClass>
         {
             public int compare(TestClass a, TestClass b)
             {

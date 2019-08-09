@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.control.Label?>
-<?import de.tesis.dynaware.grapheditor.core.view.GraphEditorView?>
-<?import javafx.scene.control.Button?> 
+<?import javafx.scene.control.ScrollPane?> 
 
 
-<AnchorPane xmlns:fx="http://javafx.com/fxml/1" fx:controller="server.TreeDisplayController" fx:id="ap">
+
+<ScrollPane xmlns:fx="http://javafx.com/fxml/1" fx:controller="server.TreeDisplayController" pannable="true">
+
+<AnchorPane fx:id="ap">
 
     
 </AnchorPane>
-
+</ScrollPane>

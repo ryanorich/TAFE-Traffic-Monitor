@@ -3,6 +3,8 @@ package server;
 import java.io.IOException;
 //import java.sql.Time;
 import java.util.ArrayList;
+import java.util.List;
+
 import javafx.collections.ObservableList;
 //import javafx.application.Application;
 import javafx.beans.property.SimpleStringProperty;
@@ -21,7 +23,8 @@ import library.*;
 import server.Server.sortOrder;
 
 /**
- * The controller (C) between the FXML View(V) and the Server class (M) (in MVC).
+ * The controller (C) between the FXML View(V) and the Server class (M) (in
+ * MVC).
  * 
  * @author Ryan Rich
  *
@@ -56,7 +59,7 @@ public class ServerController
         System.out.println("Sorting table by Location");
         txaNotifications.appendText("Sorting by Location\n");
         server.sortReadings(sortOrder.VEHICLES);
-        
+
     }
 
     @FXML
@@ -122,28 +125,28 @@ public class ServerController
         System.out.println("Saving in Post-Order");
         txaBinaryTree.appendText("Saving in Post-Order\n");
     }
-    
+
     @FXML
     private void btnDiagram(ActionEvent e) throws IOException
     {
         System.out.println("Showing Diagram");
-        
-        txaBinaryTree.appendText("Showing Diagram\n");
-        //Application.launch(testing.TestingCharts.class, new String[] {});
-        
+
+        //txaBinaryTree.appendText("Showing Diagram\n");
+        // Application.launch(testing.TestingCharts.class, new String[] {});
+
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("TreeDisplay.fxml"));
         Parent parent = fxmlLoader.load();
         TreeDisplayController treeDisplayController = fxmlLoader.<TreeDisplayController>getController();
-        //treeDisplayController.setAppMainObservableList(tvObservableList);
-        
-        treeDisplayController.showTree();
-        
+        // treeDisplayController.setAppMainObservableList(tvObservableList);
+
+        // treeDisplayController.showTree();
+
         Scene scene2 = new Scene(parent, 300, 200);
         Stage stage2 = new Stage();
         stage2.initModality(Modality.APPLICATION_MODAL);
         stage2.setScene(scene2);
         stage2.showAndWait();
-        
+
     }
 
     /**
@@ -174,7 +177,8 @@ public class ServerController
     }
 
     /**
-     * Passes a reference to the Server instance, to help pass messages back and forth.
+     * Passes a reference to the Server instance, to help pass messages back and
+     * forth.
      * 
      * @param s The instance of the Server class.
      */
@@ -193,16 +197,15 @@ public class ServerController
         dispalyReadings = FXCollections.observableArrayList(readings);
         tbvRecords.setItems(dispalyReadings);
     }
-    
-    
-    //Debug Buttons
+
+    // Debug Buttons
     @FXML
     protected void btnDBGAddRecord()
     {
         txaNotifications.appendText("Adding Record. \n");
         server.addRandomReading(server.getReadings());
     }
-    
+
     @FXML
     protected void btnDBGReloadTable()
     {
@@ -210,28 +213,84 @@ public class ServerController
         dispalyReadings = FXCollections.observableArrayList(server.getReadings());
         tbvRecords.setItems(dispalyReadings);
     }
-    
+
     @FXML
     protected void btnDBGRefreshTable()
     {
         txaNotifications.appendText("Refreshing Table.\n");
-        
+
         tbvRecords.refresh();
     }
-    
+
     /**
      * Displays reading data in a linked list
      * 
-     * @param rrll  A linked list of Record objects
+     * @param rrll A linked list of Record objects
      */
     protected void DiplayLinkedList(RRLinkedList<Reading> rrll)
     {
-        //TODO- Better Format this list
-        txaLinkedList.setText(" HEAD <==> ");
-        for (int i = 0; i<rrll.getCount(); i++)
-            txaLinkedList.appendText(rrll.get(i).toString()+" <==> ");
+        // TODO- Better Format this list
+        txaLinkedList.setText(" HEAD ⟺ ");
+        Reading r;
+        for (int i = 0; i < rrll.getCount(); i++)
+        {
+            r = rrll.get(i);
+            txaLinkedList.appendText("" + r.getTime());
+            txaLinkedList.appendText(" ⟺ ");
+        }
         txaLinkedList.appendText("TAIL");
     }
-    
+
+    protected void DisplayBinaryTree(RRBinaryTree<Reading> rrBT)
+    {
+
+        List<Reading> list;
+        String str = "";
+        Reading r;
+
+        txaBinaryTree.setText("InOrder\t\t: ");
+        list = rrBT.getInOrder();
+        if (list.size() > 0)
+        {
+            r = list.get(0);
+            str = "" + r.getAverageVelocity() + "~" + r.getTime();
+            for (int i = 1; i < list.size(); i++)
+            {
+                r = list.get(i);
+                str = str + ", " + r.getAverageVelocity() + "~" + r.getTime();
+            }
+            txaBinaryTree.appendText(str);
+        }
+        txaBinaryTree.appendText("\nPreOrder\t\t: ");
+
+        list = rrBT.getPreOrder();
+        if (list.size() > 0)
+        {
+            r = list.get(0);
+            str = "" + r.getAverageVelocity() + "~" + r.getTime();
+            for (int i = 1; i < list.size(); i++)
+            {
+                r = list.get(i);
+                str = str + ", " + r.getAverageVelocity() + "~" + r.getTime();
+            }
+            txaBinaryTree.appendText(str);
+        }
+
+        txaBinaryTree.appendText("\nPostOrder\t: ");
+
+        list = rrBT.getPostOrder();
+        if (list.size() > 0)
+        {
+            r = list.get(0);
+            str = "" + r.getAverageVelocity() + "~" + r.getTime();
+            for (int i = 1; i < list.size(); i++)
+            {
+                r = list.get(i);
+                str = str + ", " + r.getAverageVelocity() + "~" + r.getTime();
+            }
+            txaBinaryTree.appendText(str + "\n");
+        }
+
+    }
 
 }

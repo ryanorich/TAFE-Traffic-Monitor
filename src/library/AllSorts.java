@@ -1,6 +1,7 @@
 package library;
 
 import java.util.ArrayList;
+import library.RRCompare;
 
 /**
  * A selection of sorting algorithms.
@@ -15,12 +16,6 @@ public class AllSorts
     {
         INSERT, SELECTION, BUBBLE, SHELL, MERGE, HEAP, QUICK
     }
-
-    public interface  RRCompare<T> 
-    {
-        int compare(T a, T b);
-    }
-
 
     static public <T> ArrayList<T> RRSort(ArrayList<T> arr, sortType st, RRCompare<T> cmp)
     {

@@ -12,7 +12,7 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 import library.*;
-import library.AllSorts.RRCompare;
+import library.RRCompare;
 import library.AllSorts.sortType;
 /**
  * The server for the IT Town Traffic Monitoring System.
@@ -33,6 +33,7 @@ public class Server extends Application
     private ArrayList<RRCompare<Reading>> SortOrderComparitors = new ArrayList<RRCompare<Reading>>();
     public ArrayList<Reading> readings = new ArrayList<Reading>();
     private RRLinkedList<Reading> LLReadings = new RRLinkedList<Reading>();
+    private RRBinaryTree<Reading> BTReadings ;
 
     // Access for the Server Controller
     ServerController serverController;
@@ -75,11 +76,13 @@ public class Server extends Application
         Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
-
+        
+        
+     // set up the rules for sorting
+        populateSortOrderCompariotors(SortOrderComparitors);
         // generate sme initial data, for testing.
         populateDummyData(readings);
-        // set up the rules for sorting
-        populateSortOrderCompariotors(SortOrderComparitors);
+        
 
         // prime the Server Controller
         serverController.setupReadings(readings);
@@ -165,7 +168,12 @@ public class Server extends Application
             }
 
         });
+        //Borrowing the comaparitor used for sorting by velocity for the Binary Tree
+        BTReadings = new RRBinaryTree<Reading>(soc.get(sortOrder.VELOCITY.ordinal()));
+        
     }
+    
+    
 
     /**
      * For Testing - adds a reading consisting of random data
@@ -180,11 +188,13 @@ public class Server extends Application
                 rnd.nextInt(4), rnd.nextInt(1000), rnd.nextInt(500), rnd.nextInt(50) + 50);
         readings.add(r);
         LLReadings.add(r);
+        BTReadings.add(r);
 
         System.out.println("Reading count is now " + readings.size());
         // Observable List for table does not refresh when underling list changes.
         serverController.updateTable(readings);
         serverController.DiplayLinkedList(LLReadings);
+        serverController.DisplayBinaryTree(BTReadings);
         
     }
 
