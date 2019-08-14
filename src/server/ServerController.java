@@ -140,9 +140,13 @@ public class ServerController
         // treeDisplayController.setAppMainObservableList(tvObservableList);
 
         // treeDisplayController.showTree();
-
+        
         Scene scene2 = new Scene(parent, 300, 200);
         Stage stage2 = new Stage();
+        
+        System.out.println("Tree Depth is "+ server.getBinaryTree().getMaxDepth());
+        treeDisplayController.initiliseData(server.getIndexedBinaryTree());
+        
         stage2.initModality(Modality.APPLICATION_MODAL);
         stage2.setScene(scene2);
         stage2.showAndWait();

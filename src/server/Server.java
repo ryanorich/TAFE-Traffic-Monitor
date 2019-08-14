@@ -46,6 +46,16 @@ public class Server extends Application
     {
         return readings;
     }
+    
+    public RRBinaryTree<Reading> getBinaryTree()
+    {
+        return BTReadings;
+    }
+    
+    public ArrayList<Reading> getIndexedBinaryTree()
+    {
+        return BTReadings.getIndexed();
+    }
 
     /**
      * Program Entry
