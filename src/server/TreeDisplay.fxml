@@ -1,14 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.control.ScrollPane?> 
+<?import javafx.scene.control.ScrollPane?>
 
-
-
-<ScrollPane xmlns:fx="http://javafx.com/fxml/1" fx:controller="server.TreeDisplayController" pannable="true">
-
-<AnchorPane fx:id="ap">
-
-    
-</AnchorPane>
+<ScrollPane xmlns:fx="http://javafx.com/fxml/1"
+	fx:controller="server.TreeDisplayController" pannable="true">
+	<AnchorPane fx:id="ap">
+	</AnchorPane>
 </ScrollPane>
