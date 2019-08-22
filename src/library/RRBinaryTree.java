@@ -1,6 +1,7 @@
 package library;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -266,7 +267,7 @@ public class RRBinaryTree<T>
      * 
      * @return The array with all nodes in their indexed locations.
      */
-    public ArrayList<T> getIndexed()
+    public ArrayList<T> getIndexed_AL()
     {
         // TODO - Get max index size for creating array
         int width = getMaxDepth() + 1;
@@ -277,7 +278,7 @@ public class RRBinaryTree<T>
             list.add(null);
         }
         
-        _fillIndexed(list, head, 0);
+        _fillIndexed_AL(list, head, 0);
         
         return list;
     }
@@ -288,10 +289,58 @@ public class RRBinaryTree<T>
      * @param node  The node being traversed
      * @param index The index of the node (head is index 0)
      */
-    public void _fillIndexed(ArrayList<T> list, BTNode<T> node, int index)
+    public void _fillIndexed_AL(ArrayList<T> list, BTNode<T> node, int index)
     {
         //System.out.println("Filling Tree, at index"+ index);
         list.set(index, node.t);
+        if (node.left !=null)
+        {
+            _fillIndexed_AL(list, node.left, index*2+1);
+        }
+        if (node.right !=null)
+        {
+            _fillIndexed_AL(list, node.right, index*2+2);
+        }
+    }
+    
+    /**
+     * Creates and populates a HashMap with all nodes stored with  
+     * a key that represents the index of the node on a theoretical 
+     * full tree, reading in layers, left to right, top to bottom.
+     * e.g.         0
+     *             / \
+     *            1   2
+     *           / \ / \
+     *          3  4 5  6 ...etc
+     * @return The array with all nodes in their indexed locations.
+     */
+    public HashMap<Integer,T> getIndexed()
+    {
+        // TODO - Get max index size for creating array
+        int width = getMaxDepth() + 1;
+        int noOfElements = (int) java.lang.Math.pow(2, width) - 1;
+        HashMap<Integer,T> list = new HashMap<Integer, T>(noOfElements);
+        /*
+        for (int i = 0; i<noOfElements; i++)
+        {
+            list.add(null);
+        }
+         */
+        _fillIndexed(list, head, 0);
+       
+        return list;
+    }
+    
+    /**
+     * private recursive function to populate the list with all nodes.
+     * @param list  The list to be populated
+     * @param node  The node being traversed
+     * @param index The index of the node (head is index 0)
+     */
+    public void _fillIndexed(HashMap<Integer, T> list, BTNode<T> node, int index)
+    {
+        //System.out.println("Filling Tree, at index"+ index);
+        list.put(index, node.t);
         if (node.left !=null)
         {
             _fillIndexed(list, node.left, index*2+1);

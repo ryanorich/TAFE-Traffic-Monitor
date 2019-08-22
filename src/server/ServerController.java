@@ -1,5 +1,6 @@
 package server;
 
+import java.io.File;
 import java.io.IOException;
 //import java.sql.Time;
 import java.util.ArrayList;
@@ -17,6 +18,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
+import javafx.stage.FileChooser;
+import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import library.*;
@@ -35,6 +38,7 @@ public class ServerController
     private Server server;
     public int test;
     ObservableList<Reading> dispalyReadings;
+    private Stage stage;
 
     @FXML
     private TableView<Reading> tbvRecords;
@@ -83,7 +87,13 @@ public class ServerController
         System.out.println("Clearing Norificaiton Area");
         txaNotifications.setText("...\n");
     }
+    
+    protected void AddNotification(String notification)
+    {
+        txaNotifications.appendText(notification+"\n");
+    }
 
+    /* Lists are displayed automatically
     @FXML
     private void btnDisplayPreOrder(ActionEvent e)
     {
@@ -104,26 +114,26 @@ public class ServerController
         System.out.println("Displaying in Post-Order");
         txaBinaryTree.appendText("Displaying in Post-Order\n");
     }
-
-    @FXML
-    private void btnSavePreOrder(ActionEvent e)
-    {
-        System.out.println("Saving in Pre-Order");
-        txaBinaryTree.appendText("Saving in Pre-Order\n");
-    }
-
+*/
+    
     @FXML
     private void btnSaveInOrder(ActionEvent e)
     {
-        System.out.println("Saving in In-Order");
-        txaBinaryTree.appendText("Saving in In-Order\n");
+
+        server.saveJson(server.getBinaryTree().getInOrder());
+    }
+    @FXML
+    private void btnSavePreOrder(ActionEvent e)
+    {
+
+        server.saveJson(server.getBinaryTree().getPreOrder());
     }
 
     @FXML
     private void btnSavePostOrder(ActionEvent e)
     {
-        System.out.println("Saving in Post-Order");
-        txaBinaryTree.appendText("Saving in Post-Order\n");
+
+        server.saveJson(server.getBinaryTree().getPostOrder());
     }
 
     @FXML
@@ -245,9 +255,13 @@ public class ServerController
         txaLinkedList.appendText("TAIL");
     }
 
+    /**
+     * Shows a graphical representation of a binary tree of Reading objects.
+     * 
+     * @param rrBT Binary Tree of Readings
+     */
     protected void DisplayBinaryTree(RRBinaryTree<Reading> rrBT)
     {
-
         List<Reading> list;
         String str = "";
         Reading r;
@@ -255,7 +269,7 @@ public class ServerController
         txaBinaryTree.setText("InOrder\t\t: ");
         list = rrBT.getInOrder();
         if (list.size() > 0)
-        {
+        {// there are elements in the list to display
             r = list.get(0);
             str = "" + r.getAverageVelocity() + "~" + r.getTime();
             for (int i = 1; i < list.size(); i++)
@@ -294,7 +308,5 @@ public class ServerController
             }
             txaBinaryTree.appendText(str + "\n");
         }
-
     }
-
 }

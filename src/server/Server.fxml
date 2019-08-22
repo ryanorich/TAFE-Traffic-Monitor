@@ -79,40 +79,46 @@
 
 		<TextArea fx:id="txaBinaryTree" prefHeight="100" wrapText="true"/>
 		<HBox>
+		
+		<BorderPane>
+                <top>
+                    <Label text="In-Order" />
+                </top>
+                <!-- <left>
+                    <Button text="Diaplay" onAction="#btnDisplayInOrder" />
+                </left>-->
+                <bottom>
+                    <Button text="Save" onAction="#btnSaveInOrder" />
+                </bottom>
+            </BorderPane>
+            <Region prefWidth="20" />
+            
 			<BorderPane>
 				<top>
 					<Label text="Pre-Order" />
 				</top>
+				<!--  
 				<left>
 					<Button text="Diaplay" onAction="#btnDisplayPreOrder" />
 				</left>
-				<right>
+				-->
+				<bottom>
 					<Button text="Save" onAction="#btnSavePreOrder" />
-				</right>
+				</bottom>
 			</BorderPane>
 			<Region prefWidth="20" />
-			<BorderPane>
-				<top>
-					<Label text="In-Order" />
-				</top>
-				<left>
-					<Button text="Diaplay" onAction="#btnDisplayInOrder" />
-				</left>
-				<right>
-					<Button text="Save" onAction="#btnSaveInOrder" />
-				</right>
-			</BorderPane>
-			<Region prefWidth="20" />
+
+			
 			<BorderPane>
 				<top>
 					<Label text="Post-Order" />
 				</top>
-				<left>
+				<!-- <left>
 					<Button text="Diaplay" onAction="#btnDisplayPostOrder" />
-				</left>
-				<right>
+				</left>-->
+				<bottom>
 					<Button text="Save" onAction="#btnSavePostOrder" />
-				</right>
+				</bottom>
 			</BorderPane>
 			<Region prefWidth="20" />
 			<BorderPane>

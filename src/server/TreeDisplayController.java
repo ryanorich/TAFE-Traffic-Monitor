@@ -1,6 +1,9 @@
 package server;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+
 import javafx.fxml.FXML;
 import javafx.scene.control.Tooltip;
 import javafx.scene.layout.AnchorPane;
@@ -21,7 +24,8 @@ public class TreeDisplayController
 {
     @FXML
     public AnchorPane ap = new AnchorPane();
-    private ArrayList<Reading> indexedBT;
+    private HashMap<Integer, Reading> indexedBT;
+    private int MAXINDEX;
     private int MAXDEPTH;
     private int NODESIZE = 30;
     private int NODERAD = NODESIZE / 2;
@@ -34,7 +38,7 @@ public class TreeDisplayController
      * 
      * @param iBT The indexed Binary Tree data
      */
-    public void initiliseData(ArrayList<Reading> iBT)
+    public void initiliseData(HashMap<Integer, Reading> iBT)
     {
         // Sets the delays and durations for tooltops.
         library.FXHelper.setupCustomTooltipBehavior(5, 100000, 5);
@@ -42,17 +46,20 @@ public class TreeDisplayController
         this.indexedBT = iBT;
 
         // create the general parameters for the tree data.
-
+        
+        //Get the largest keyed index.
+        MAXINDEX = Collections.max(indexedBT.keySet());
+        
         // Get the maximum tree depth, based on the largest index of the array.
-        this.MAXDEPTH = depth(indexedBT.size() - 1);
+        this.MAXDEPTH = depth(MAXINDEX);
 
         // Adding Lines
         // Since leaves have no decentants, only need to check up to the first node on
         // the deepest level, which is as 2^depth-1
-        int maxIndex = intPow(2, MAXDEPTH) - 1, j;
-
+        //int maxIndex = intPow(2, MAXDEPTH) - 1, j;
+        int j;
         // Start at each node
-        for (int i = 0; i < maxIndex; i++)
+        for (int i = 0; i < MAXINDEX; i++)
         {
             if (indexedBT.get(i) != null)
             {// There is a node - Check for branches.
@@ -74,7 +81,7 @@ public class TreeDisplayController
         }
 
         // Adding Nodes
-        for (int i = 0; i < indexedBT.size(); i++)
+        for (int i = 0; i <= MAXINDEX; i++)
         {
             Reading r = indexedBT.get(i);
             if (r != null)
