@@ -79,6 +79,7 @@ public class ServerController
     {
         System.out.println("Polling Stations");
         txaNotifications.appendText("Polling Stations\n");
+        server.testClientConnections();
     }
 
     @FXML

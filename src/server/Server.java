@@ -52,7 +52,13 @@ public class Server extends Application
     // Access for the Server Controller
     ServerController serverController;
     
-    private String port = "8888";
+    private int port = 8888;
+    private ClientManager clientManager = new ClientManager(port);
+    
+    public void testClientConnections()
+    {
+        clientManager.testConnections();
+    }
     
     /**
      * Access to the current readings list
@@ -133,6 +139,8 @@ public class Server extends Application
                                          "Server Name:\t"+ inetAddress.getHostName() + "\n" + 
                                          "Server IP:  \t"+ inetAddress.getHostAddress() + "\n" +  
                                          "Server Port:\t"+ port + "\n");
+        
+        clientManager.start();
     }
     
     /**
