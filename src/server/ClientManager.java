@@ -6,6 +6,8 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+
+import library.Reading;
 import server.ClientThread;
 
 
@@ -20,10 +22,21 @@ public class ClientManager extends Thread
     ArrayList<ClientThread> clientThreads = new ArrayList<ClientThread>();
     Thread thread;
     int nextLocation = 1;
+    boolean exit = false;
+    Server server;
     
-    protected ClientManager(int port)
+    protected void exit()
     {
-        
+        exit = true;
+        for (ClientThread ct : clientThreads)
+        {
+            ct.exit = true;
+        }
+    }
+    
+    protected ClientManager(Server server, int port)
+    {
+        this.server = server;
         System.out.println("This is the Constructur");
         this.port = port;
      
@@ -43,7 +56,7 @@ public class ClientManager extends Thread
             e1.printStackTrace();
         }
         
-        while (true)
+        while (!exit)
         {
             System.out.println("In main loop, waiting for connection");
             
@@ -61,21 +74,16 @@ public class ClientManager extends Thread
             ClientThread clientThread = null;
             try
             {
-                clientThread = new ClientThread(this, socket);
-            } catch (IOException e)
-            {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-            
-            clientThreads.add(clientThread);
-            clientThread.start();
-            
-            try
-            {
-                clientThread.streamOut.write(nextLocation);
-                clientThread.location = nextLocation;
+                clientThread = new ClientThread(this, socket, nextLocation);
                 nextLocation++;
+            
+                clientThreads.add(clientThread);
+                clientThread.start();
+
+                //clientThread.streamOut.write(nextLocation);
+                //System.out.println("Just Send Locaiton "+ nextLocation);
+                //clientThread.location = nextLocation;
+                
             } catch (IOException e)
             {
                 // TODO Auto-generated catch block
@@ -100,17 +108,13 @@ public class ClientManager extends Thread
         List<ClientThread> threadsToRemove = new LinkedList<ClientThread>();
         for (ClientThread ct : clientThreads)
         {
-            System.out.println("" + ct.getId()+", Connected:" +ct.socket.isConnected()
-                                              +", Closed:" + socket.isClosed()
-                                              +", Input Shut Down:" + socket.isInputShutdown()
-                                              +", Output Shut Down:" + socket.isInputShutdown()
-                                              
-                                              
-                                              
-                                              );
             
             try
             {
+                ct.streamOut.writeUTF("ping");
+                ct.streamOut.writeUTF("ping");
+                ct.streamOut.writeUTF("ping");
+                ct.streamOut.writeUTF("ping");
                 ct.streamOut.writeUTF("ping");
                 System.out.println("Pinged OK");
             }
@@ -122,8 +126,8 @@ public class ClientManager extends Thread
                     //TODO - how to nicely destroy socket listening thread.
                     ct.streamIn.close();
                     ct.streamOut.close();
-                    ct.socket.close();
-                    ct.socket = null;
+                    //ct.socket.close();
+                    //ct.socket = null;
                     
                     threadsToRemove.add(ct);
                     
@@ -147,5 +151,12 @@ public class ClientManager extends Thread
         System.out.println("Connection after "+clientThreads.size());
        
     
+    }
+    
+    protected void makeReading(String message)
+    {
+        Reading reading = new Reading(message);
+        System.out.println("Reading is now "+reading.toString());
+        server.addReading(reading);
     }
 }

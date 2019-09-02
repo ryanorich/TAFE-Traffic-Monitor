@@ -89,6 +89,24 @@ public class Reading
         this.averageVelocity = averageVelocity;
     }
     
+    public Reading(String reading)
+    {
+        String parts[] = reading.split(",");
+        if (parts.length != 6)
+            return;
+        String timeParts[] = parts[0].split(":");
+        if (timeParts.length !=3)
+            return;
+        time = new Time(Integer.parseInt(timeParts[0]), 
+                        Integer.parseInt(timeParts[1]), 
+                        Integer.parseInt(timeParts[2]));
+        location = Integer.parseInt(parts[1]);
+        noOfLanes = Integer.parseInt(parts[2]);
+        totalNoVehicles = Integer.parseInt(parts[3]);
+        averageNoVehicles = Integer.parseInt(parts[4]);
+        averageVelocity = Integer.parseInt(parts[5]);
+    }
+    
     /**
      * Creates a new reading that is a copy of the one passed.
      * 
@@ -135,12 +153,13 @@ public class Reading
     }
     
     /**
-     * Prints out the readign data as a string
+     * Prints out the  data as a string
      */
     public String toString()
     {
-        return time.toString() + " - " + location + " - " + noOfLanes + " - " + 
-                     totalNoVehicles + " - " + averageNoVehicles + " - " + averageVelocity;
+        String r = time.toString() + "," + location + "," + noOfLanes + "," + 
+                totalNoVehicles + "," + averageNoVehicles + "," + averageVelocity;
+        return r;
     }
 
 }

@@ -53,7 +53,7 @@ public class Server extends Application
     ServerController serverController;
     
     private int port = 8888;
-    private ClientManager clientManager = new ClientManager(port);
+    private ClientManager clientManager = new ClientManager(this, port);
     
     public void testClientConnections()
     {
@@ -116,6 +116,12 @@ public class Server extends Application
         Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
+        
+        stage.setOnCloseRequest(e -> 
+        {
+            clientManager.exit();
+            System.exit(0);   
+        });
 
         // set up the rules for sorting
         populateSortOrderCompariotors(SortOrderComparitors);
@@ -244,7 +250,20 @@ public class Server extends Application
         serverController.updateTable(readings);
         serverController.DiplayLinkedList(LLReadings);
         serverController.DisplayBinaryTree(BTReadings);
-
+    }
+    
+    protected void addReading(Reading r)
+    {
+        readings.add(r);
+        LLReadings.add(r);
+        BTReadings.add(r);
+        
+        System.out.println("Reading count is now " + readings.size());
+        // Observable List for table does not refresh when underling list changes.
+        serverController.updateTable(readings);
+        serverController.DiplayLinkedList(LLReadings);
+        serverController.DisplayBinaryTree(BTReadings);
+        
     }
 
     // TODO Check if this can be deleted.

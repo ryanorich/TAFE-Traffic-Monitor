@@ -10,15 +10,18 @@
 <?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.layout.Region?>
 <?import javafx.geometry.Insets?>
+<?import org.controlsfx.control.StatusBar?>
+<?import javafx.scene.layout.BorderPane?>
 
 
-
-<VBox xmlns:fx="http://javafx.com/fxml/1"
-	fx:controller="client.ClientController" alignment="CENTER" spacing="20">
+<BorderPane xmlns:fx="http://javafx.com/fxml/1"
+    fx:controller="client.ClientController">
+    <center>
+<VBox  alignment="CENTER" spacing="20">
 	<padding>
 		<Insets left="50" right="50" top="20" bottom="20" />
 	</padding>
-	<Label text="Monitoring Stn X" fx:id="txtTitle"
+	<Label text="Monitoring Station" fx:id="txtTitle"
 		style="-fx-font: NORMAL 40 Tahoma;" />
 
 	<GridPane alignment="CENTER" hgap="10.0" vgap="10.0">
@@ -27,15 +30,15 @@
 			GridPane.rowIndex="0" />
 		<TextField fx:id="txfTime" GridPane.columnIndex="1"
 			GridPane.rowIndex="0" />
-		<CheckBox text="Enter Manualy" GridPane.columnIndex="2"
+		<CheckBox fx:id="chkTime" text="Enter Manualy" GridPane.columnIndex="2"
 			GridPane.rowIndex="0" />
 
 		<Label text="Location" GridPane.columnIndex="0"
 			GridPane.rowIndex="1" />
 		<TextField fx:id="txfLocation" GridPane.columnIndex="1"
 			GridPane.rowIndex="1" />
-		<CheckBox text="Enter Manualy" GridPane.columnIndex="2"
-			GridPane.rowIndex="2" />
+		<CheckBox fx:id="chkLocation" text="Enter Manualy" GridPane.columnIndex="2"
+			GridPane.rowIndex="1" />
 
 		<Label text="# Lanes" GridPane.columnIndex="0"
 			GridPane.rowIndex="2" />
@@ -43,7 +46,7 @@
 			GridPane.rowIndex="2" />
 
 		<Label text="Total # Vehicles" GridPane.columnIndex="0"
-			GridPane.rowIndex="03" />
+			GridPane.rowIndex="3" />
 		<TextField fx:id="txfTotalNoOfVehicles"
 			GridPane.columnIndex="1" GridPane.rowIndex="3" />
 
@@ -51,7 +54,7 @@
 			GridPane.rowIndex="4" />
 		<TextField fx:id="txfAverageNoOfVehicles"
 			GridPane.columnIndex="1" GridPane.rowIndex="4" />
-		<CheckBox text="Enter Manualy" GridPane.columnIndex="2"
+		<CheckBox fx:id="chkAverageNoVehicles" text="Enter Manualy" GridPane.columnIndex="2"
 			GridPane.rowIndex="4" />
 
 		<Label text="Average Velocity" GridPane.columnIndex="0"
@@ -66,5 +69,15 @@
 		<Region prefWidth="20" />
 		<Button text="Exit" fx:id="btnExit" onAction="#exit"
 			prefWidth="100" />
+		<Button text="Connect" fx:id="btnConnect" onAction="#Connect"></Button>
 	</HBox>
+	
 </VBox>
+</center>
+<bottom>
+<StatusBar text="A Status Bar" fx:id="stbStatus">
+
+    </StatusBar>
+</bottom>
+
+</BorderPane>
