@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<?language javascript?>
 
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.control.Button?>
@@ -16,7 +17,10 @@
 
 <BorderPane xmlns:fx="http://javafx.com/fxml/1"
     fx:controller="client.ClientController">
+    
+    
     <center>
+    
 <VBox  alignment="CENTER" spacing="20">
 	<padding>
 		<Insets left="50" right="50" top="20" bottom="20" />
@@ -31,14 +35,14 @@
 		<TextField fx:id="txfTime" GridPane.columnIndex="1"
 			GridPane.rowIndex="0" />
 		<CheckBox fx:id="chkTime" text="Enter Manualy" GridPane.columnIndex="2"
-			GridPane.rowIndex="0" />
+			GridPane.rowIndex="0" onAction="#chkTimeToggled" />
 
 		<Label text="Location" GridPane.columnIndex="0"
 			GridPane.rowIndex="1" />
 		<TextField fx:id="txfLocation" GridPane.columnIndex="1"
 			GridPane.rowIndex="1" />
 		<CheckBox fx:id="chkLocation" text="Enter Manualy" GridPane.columnIndex="2"
-			GridPane.rowIndex="1" />
+			GridPane.rowIndex="1" onAction="#chkLocationToggled"/>
 
 		<Label text="# Lanes" GridPane.columnIndex="0"
 			GridPane.rowIndex="2" />
@@ -55,12 +59,13 @@
 		<TextField fx:id="txfAverageNoOfVehicles"
 			GridPane.columnIndex="1" GridPane.rowIndex="4" />
 		<CheckBox fx:id="chkAverageNoVehicles" text="Enter Manualy" GridPane.columnIndex="2"
-			GridPane.rowIndex="4" />
+			GridPane.rowIndex="4" onAction="#chkAverageNoVehiclesToggled" />
 
-		<Label text="Average Velocity" GridPane.columnIndex="0"
+		<Label text="Average Velocity"  GridPane.columnIndex="0"
 			GridPane.rowIndex="5" />
-		<TextField fx:id="txfAverageVelocity"
+		<TextField fx:id="txfAverageVelocity" 
 			GridPane.columnIndex="1" GridPane.rowIndex="5" />
+
 	</GridPane>
 
 	<HBox>
@@ -79,5 +84,14 @@
 
     </StatusBar>
 </bottom>
+            <fx:script>
+                function updateTime() {
+                    var now = new Date();
+                    var atime = "".concat(now.getHours(), now.getMinutes(), now.getSeconds());
+                txfAverageVelocity.text = atime;
+            }
+            </fx:script>
 
 </BorderPane>
+
+

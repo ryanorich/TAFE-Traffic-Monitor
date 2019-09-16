@@ -24,15 +24,17 @@ import javafx.stage.Stage;
 
 public class Client extends Application
 {
-    boolean autoconnect = false;
-    volatile DataOutputStream out = null;
-    volatile DataInputStream in = null;
+    DataOutputStream out = null;
+    DataInputStream in = null;
+    Socket socket;
     ServerListener listener = null;
     int location = 0;
     ClientController controller;
     String server = "ryan-laptop";
     int port = 8888;
     Connection serverCon = new Connection("ryan-laptop",8888);
+    
+    public boolean isConnected = false;
     
     public static void main(String[] args)
     {
@@ -55,22 +57,19 @@ public class Client extends Application
         stage.setScene(scene);
         stage.show();
         stage.setOnCloseRequest(e -> System.exit(0));
+
         
-        if (autoconnect) {
-        connectToServer();
-        SendReading("Test 1");
-        SendReading("Test 2");
-        }
     }
     
     public boolean connectToServer()
     {
         try
         {
-            Socket socket = new Socket(serverCon.server, serverCon.port);
+            socket = new Socket(serverCon.server, serverCon.port);
+            
             in = new DataInputStream(socket.getInputStream());
             out = new DataOutputStream(socket.getOutputStream());
-            Runnable listener = new ServerListener(socket);
+            Runnable listener = new ServerListener();
             Thread thread = new Thread(listener);
             thread.start();
             
@@ -79,7 +78,8 @@ public class Client extends Application
             out.writeUTF("Location");
      
 
-        } catch (IOException e)
+        } 
+        catch (IOException e)
         {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -89,6 +89,44 @@ public class Client extends Application
         
         
         return true;
+    }
+    
+    public void disconnectFromServer()
+    {
+        try
+        {
+            if(in!=null)
+            {
+                in.close();
+                in = null;
+            }
+            
+            if(out!=null)
+            {
+                out.close();
+                out = null;
+            }
+            
+            if (socket != null)
+            {
+                socket.close();
+                socket = null;
+            }
+            
+            if (listener!=null)
+            {
+                listener.exit = true;
+                listener = null;
+            }
+            
+
+            location  = 0;
+            
+        } 
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
     }
     
     public String getServerDetails()
@@ -114,13 +152,7 @@ public class ServerListener implements Runnable
     
     
     boolean exit = false;
-    
-    ServerListener(Socket socket)
-    {
 
-        
-    }
-    
     @Override
     public void run()
     {
@@ -181,7 +213,7 @@ class Connection
         return port;
     }
     
-    
+    @Override
     public String toString()
     {
         return server+":"+port;

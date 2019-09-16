@@ -13,8 +13,8 @@ public class ClientThread extends Thread
 {
     //Socket socket;
     int location;
-    volatile DataInputStream streamIn;
-    volatile DataOutputStream streamOut;
+     DataInputStream streamIn;
+     DataOutputStream streamOut;
     ClientManager manager;
     boolean exit=false;
     
