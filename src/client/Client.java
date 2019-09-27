@@ -17,6 +17,7 @@ import java.net.Socket;
  * @author Ryan Rich
  */
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
@@ -73,8 +74,7 @@ public class Client extends Application
             Thread thread = new Thread(listener);
             thread.start();
             
-            System.out.println("Writing Out for location");
-            
+            //Requesting Locaiton # from server
             out.writeUTF("Location");
      
 
@@ -149,8 +149,7 @@ public class Client extends Application
 
 public class ServerListener implements Runnable
 {
-    
-    
+
     boolean exit = false;
 
     @Override
@@ -162,6 +161,7 @@ public class ServerListener implements Runnable
         {
             while(!exit)
             {
+                Thread.sleep(100);
                 System.out.println("Waiting for Reading in UTF:");
                 message = in.readUTF();
                 if (!message.contentEquals("ping"))
@@ -171,21 +171,34 @@ public class ServerListener implements Runnable
                 }
                 System.out.println(message);
             }
-            
 
-            
         }
         catch (Exception e)
         {
-            System.out.println("Esception - "+ e.toString());
+            // Exception happens after server disconnects
+            System.out.println("Exception - "+ e.toString());
+            
+            callDisconnect dc = new callDisconnect();
+            
+            Platform.runLater(dc);
+
         }
         
-
     }
     
 }
 
+public class callDisconnect implements Runnable
+{
+    public void run()
+    {
+        controller.setDisconnect();
+    }
 }
+
+}
+
+
 
 class Connection
 {

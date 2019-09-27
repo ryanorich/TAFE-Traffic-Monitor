@@ -48,7 +48,7 @@ public class RRBinaryTree<T>
     }
     
     /**
-     * Recursive function to traverse the tree
+     * Private recursive function to traverse the tree for adding node
      * @param node      The node being traversed
      * @param newNode   The node to to be added
      */
@@ -97,11 +97,10 @@ public class RRBinaryTree<T>
     {
         List<T> list = new LinkedList<T>();
         return _getInOrder(head, list);
-        
     }
     
     /**
-     * private recursive function for traversing the tree
+     * private recursive function for traversing the tree to populate the InOrder list
      * 
      * @param n     Node being traversed
      * @param list  List being populated
@@ -142,7 +141,7 @@ public class RRBinaryTree<T>
     }
     
     /**
-     * private recursive function for traversing the tree
+     * private recursive function for traversing the tree to populate the PreOrder list
      * 
      * @param n     Node being traversed
      * @param list  List being populated
@@ -185,7 +184,7 @@ public class RRBinaryTree<T>
     }
     
     /**
-     * private recursive function for traversing the tree
+     * private recursive function for traversing the tree to populate the PostOrder list
      * 
      * @param n     Node being traversed
      * @param list  List being populated
@@ -232,7 +231,7 @@ public class RRBinaryTree<T>
     }
     
     /**
-     * Private recursive function for traversing the tree
+     * private recursive function for traversing the tree to find maximum depth
      * 
      * @param node      The node being traversed
      * @param depth     The current depth
@@ -263,7 +262,7 @@ public class RRBinaryTree<T>
     
     /**
      * Creates and populates an ArrayList representing all possible positions for 
-     * nodes wiht a maximum depth matching the tree's maximum depth.
+     * nodes with a maximum depth matching the tree's maximum depth.
      * 
      * @return The array with all nodes in their indexed locations.
      */
@@ -320,12 +319,7 @@ public class RRBinaryTree<T>
         int width = getMaxDepth() + 1;
         int noOfElements = (int) java.lang.Math.pow(2, width) - 1;
         HashMap<Integer,T> list = new HashMap<Integer, T>(noOfElements);
-        /*
-        for (int i = 0; i<noOfElements; i++)
-        {
-            list.add(null);
-        }
-         */
+ 
         _fillIndexed(list, head, 0);
        
         return list;
@@ -368,5 +362,4 @@ public class RRBinaryTree<T>
             this.t=t;
         }
     }
-
 }

@@ -162,22 +162,10 @@ public class TreeDisplayController
         // between this and the index
         int layerIndex = index - intPow(2, depth) + 1;
         int spacing = NODESPACING;
+        
+        spacing = spacing * intPow(2, (MAXDEPTH - depth));
+        x = spacing * (layerIndex) + spacing / 2;
 
-        if (depth == MAXDEPTH)
-        {// We are at the bottom of the tree
-            x = spacing * layerIndex + spacing / 2;
-        } else
-        {// We not at the bottom of the tree
-
-            // spacing doubles for every layer above the bottom
-
-            spacing = spacing * intPow(2, (MAXDEPTH - depth));
-
-            // Node also starts with hapf the spacing
-
-            x = spacing * (layerIndex) + spacing / 2;
-
-        }
         return x + PADDING;
     }
 

@@ -2,16 +2,22 @@ package client;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Polygon;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import library.Reading;
 import impl.org.controlsfx.control.validation.*;
 
+import java.io.IOException;
 import java.sql.Time;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -266,8 +272,18 @@ public class ClientController
         }
 
     }
+    
+    protected void setDisconnect()
+    {
+        client.disconnectFromServer();
+        btnConnect.setText("Connect");
+        stbStatus.setText("Disconnected from Server");
+        btnSubmit.setDisable(true);
+        client.isConnected = false;
+        txfLocation.setText("");
+    }
 
-    @FXML protected void Connect (ActionEvent e)
+    @FXML protected void Connect ()
     {
         System.out.println("Connecting / Disconnecting");
 
@@ -283,7 +299,33 @@ public class ClientController
         else
         {// Not currently connected - connect
         stbStatus.setText("Conecting to Server");
+        
+        //Dialogue to set the connection
+       // stage.setTitle("Traffic Station");
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("ConnectionDialog.fxml"));
+        Pane root = null;
+        try
+        {
+            root = loader.load();
+        } catch (IOException e1)
+        {
+            // TODO Auto-generated catch block
+            e1.printStackTrace();
+        }
+        ConnectionDialogController controller = ( ConnectionDialogController) loader.getController();
+        controller.passConnection(client.serverCon);
 
+        Scene scene = new Scene(root);
+        Stage stage = new Stage();
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.setScene(scene);
+        stage.setOnCloseRequest(e1 -> stage.close());
+        stage.showAndWait();
+        //stage.getUserData();
+       // stage.setOnCloseRequest(e -> System.exit(0));
+
+        if (controller.OK)
+        {
         if (client.connectToServer())
         {
             btnConnect.setText("Disconnect");
@@ -297,6 +339,8 @@ public class ClientController
             client.isConnected = false;
         }
         }
+        }
+        
 
     }
 

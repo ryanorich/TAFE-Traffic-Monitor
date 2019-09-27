@@ -25,7 +25,11 @@ public class TestingRRArrays
 
     TestingRRArrays()
     {
-        System.out.println("Testing Arrays");
+        System.out.println("Testing RRArrays array sorting");
+        System.out.println("Input represents an array to be sorted");
+        System.out.println("Output 1 sortes the array by the integer");
+        System.out.println("Output 2 sorts the array by the character");
+        System.out.println("Input should be unchanged after the sort operation");
         ArrayList<TestClass> in1 = new ArrayList<TestClass>();
         ArrayList<TestClass> in2 = new ArrayList<TestClass>();
         ArrayList<TestClass> in3 = new ArrayList<TestClass>();
@@ -35,6 +39,7 @@ public class TestingRRArrays
         int num;
         String str;
 
+        // populate test arrays with random data
         for (int i = 0; i < 8; i++)
         {
             num = rnd.nextInt(10);
@@ -48,8 +53,8 @@ public class TestingRRArrays
             in3.add(new TestClass(num, str));
         }
 
-        System.out.println("Testing INSERT:");
-        System.out.println("In   : " + in1);
+        System.out.println("\nTesting INSERT:");
+        System.out.println("Input    : " + in1);
 
         // Using streight lambda expressions
         ArrayList<TestClass> out1a = library.AllSorts.RRSort(in1, AllSorts.sortType.INSERT,
@@ -60,23 +65,23 @@ public class TestingRRArrays
 
                 (a, b) -> ((TestClass) a).s.compareTo(((TestClass) b).s));
 
-        System.out.println("Out1a: " + out1a);
-        System.out.println("Outab: " + out1b);
-        System.out.println("In   : " + in1);
+        System.out.println("Output 1 : " + out1a);
+        System.out.println("Output 2 : " + out1b);
+        System.out.println("Input    : " + in1);
 
         // Using comparison objects
         RRCompare<TestClass> cmp1 = (a, b) -> a.i == b.i ? 0 : a.i > b.i ? 1 : -1;
         RRCompare<TestClass> cmp2 = (a, b) -> a.s.compareTo(b.s);
 
-        System.out.println("Testing SELECTION:");
-        System.out.println("In    :" + in2);
+        System.out.println("\nTesting SELECTION:");
+        System.out.println("Input    : " + in2);
         ArrayList<TestClass> out2a, out2b;
         out2a = AllSorts.RRSort(in2, sortType.SELECTION, cmp1);
         out2b = AllSorts.RRSort(in2, sortType.SELECTION, cmp2);
 
-        System.out.println("Out2a: " + out2a);
-        System.out.println("Out2b: " + out2b);
-        System.out.println("In    :" + in2);
+        System.out.println("Output 1 : " + out2a);
+        System.out.println("Output 2 : " + out2b);
+        System.out.println("Input    : " + in2);
 
         // Implementing using classes that implement the c ompare function
         class cmp3a implements RRCompare<TestClass>
@@ -95,10 +100,10 @@ public class TestingRRArrays
             };
         }
 
-        System.out.println("Testing BUBBLE:");
-        System.out.println("In    :" + in3);
-        System.out.println("Out3a: " + AllSorts.RRSort(in3, sortType.BUBBLE, new cmp3a()));
-        System.out.println("Out3b: " + AllSorts.RRSort(in3, sortType.BUBBLE, new cmp3b()));
-        System.out.println("In    :" + in3);
+        System.out.println("\nTesting BUBBLE:");
+        System.out.println("Input    : " + in3);
+        System.out.println("Output 1 : " + AllSorts.RRSort(in3, sortType.BUBBLE, new cmp3a()));
+        System.out.println("Output 2 : " + AllSorts.RRSort(in3, sortType.BUBBLE, new cmp3b()));
+        System.out.println("Input    : " + in3);
     }
 }

@@ -33,7 +33,7 @@
 		<Label text="Time" GridPane.columnIndex="0"
 			GridPane.rowIndex="0" />
 		<TextField fx:id="txfTime" GridPane.columnIndex="1"
-			GridPane.rowIndex="0" />
+			GridPane.rowIndex="0" promptText="HH:MM:SS"/>
 		<CheckBox fx:id="chkTime" text="Enter Manualy" GridPane.columnIndex="2"
 			GridPane.rowIndex="0" onAction="#chkTimeToggled" />
 
@@ -80,7 +80,7 @@
 </VBox>
 </center>
 <bottom>
-<StatusBar text="A Status Bar" fx:id="stbStatus">
+<StatusBar text="Not Connected" fx:id="stbStatus">
 
     </StatusBar>
 </bottom>
