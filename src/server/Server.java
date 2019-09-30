@@ -12,20 +12,22 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-//import javafx.scene.control.TableColumn.SortType;
 import javafx.scene.layout.Pane;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage;
-
-import library.*;
-import library.RRCompare;
+import library.AllSorts;
 import library.AllSorts.sortType;
-
-import org.json.simple.*;
+import library.RRBinaryTree;
+import library.RRCompare;
+import library.RRLinkedList;
+import library.Reading;
 
 /**
  * The server for the IT Town Traffic Monitoring System. This server connects to
@@ -60,6 +62,10 @@ public class Server extends Application
         clientManager.testConnections();
     }
     
+    public void addNotification(String notification)
+    {
+       serverController.AddNotification(notification);
+    }
     /**
      * Access to the current readings list
      * 
@@ -126,7 +132,7 @@ public class Server extends Application
         // set up the rules for sorting
         populateSortOrderCompariotors(SortOrderComparitors);
         // generate sme initial data, for testing.
-        populateDummyData(readings);
+        //populateDummyData(readings);
 
         // prime the Server Controller
         serverController.setupReadings(readings);
@@ -149,27 +155,6 @@ public class Server extends Application
         clientManager.start();
     }
     
-    /**
-     * Populates the readings list with a bunch or random readings
-     * 
-     * @param readings The list of reading stored by the server
-     */
-    void populateDummyData(ArrayList<Reading> readings)
-    {
-        System.out.println("Seeding Data");
-
-        for (int i = 0; i < 10; i++)
-        {
-            addRandomReading(readings);
-        }
-
-        for (Reading r : readings)
-        {
-            System.out.println(r);
-            LLReadings.add(r);
-        }
-
-    }
 
     /**
      * Crates the various rules for sorting the readigns list
@@ -237,19 +222,11 @@ public class Server extends Application
     protected void addRandomReading(ArrayList<Reading> readings)
     {
         Random rnd = new Random();
-        // TODO - Re-Implement the depreciated time constructor
+        // TODO - Re-Implement the depreciated time constructor??
         @SuppressWarnings("deprecation")
         Reading r = new Reading(new Time(rnd.nextInt(24), rnd.nextInt(60), rnd.nextInt(60)), rnd.nextInt(20),
                 rnd.nextInt(4), rnd.nextInt(1000), rnd.nextInt(500), rnd.nextInt(50) + 50);
-        readings.add(r);
-        LLReadings.add(r);
-        BTReadings.add(r);
-
-        System.out.println("Reading count is now " + readings.size());
-        // Observable List for table does not refresh when underling list changes.
-        serverController.updateTable(readings);
-        serverController.DiplayLinkedList(LLReadings);
-        serverController.DisplayBinaryTree(BTReadings);
+        addReading(r);
     }
     
     protected void addReading(Reading r)
@@ -258,25 +235,13 @@ public class Server extends Application
         LLReadings.add(r);
         BTReadings.add(r);
         
-        System.out.println("Reading count is now " + readings.size());
+        
+        addNotification("Reading Added. Reading Count is "+ readings.size());
         // Observable List for table does not refresh when underling list changes.
         serverController.updateTable(readings);
         serverController.DiplayLinkedList(LLReadings);
         serverController.DisplayBinaryTree(BTReadings);
         
-    }
-
-    // TODO Check if this can be deleted.
-    /**
-     * For Debugging - Adds a blank reading to the list
-     */
-    public void addReading()
-    {
-        readings.add(new Reading());
-
-        System.out.println("Reading count is now " + readings.size());
-
-        serverController.updateTable(readings);
     }
 
     /**
@@ -313,6 +278,7 @@ public class Server extends Application
      * 
      * @param list List of Readings to save to file
      */
+    @SuppressWarnings("unchecked")
     protected void saveJson(List<Reading> list)
     {
         //Get file name

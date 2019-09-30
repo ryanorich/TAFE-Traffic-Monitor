@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<!-- GUI for entering server connection details -->
+
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.GridPane?>
@@ -10,25 +12,29 @@
 <?import javafx.geometry.Insets?>
 
 
-<BorderPane xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.ConnectionDialogController">
+<BorderPane xmlns:fx="http://javafx.com/fxml/1"
+	fx:controller="client.ConnectionDialogController">
 
-<center>
-<GridPane hgap="10" vgap="10">
-<padding>
-<Insets bottom="20" top="20" right="20" left="20"></Insets>
-</padding>
+	<center>
+		<GridPane hgap="10" vgap="10">
+			<padding>
+				<Insets bottom="20" top="20" right="20" left="20"></Insets>
+			</padding>
 
-<Label GridPane.rowIndex="0" GridPane.columnIndex="0">Server:</Label>
-    <TextField fx:id="txfServer" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
-    <Label GridPane.rowIndex="1" GridPane.columnIndex="0">Port:</Label>
-    <TextField fx:id="txfPort" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
-</GridPane>
-</center>
-<bottom>
-<HBox >
-<Button fx:id="btnConnOK" onAction="#OKButtonPressed">OK</Button>
-<Button fx:id="btnConnCancel" cancelButton="true" onAction="#CancelButtonPressed">Cancel</Button>
-</HBox>
-</bottom>
+			<Label GridPane.rowIndex="0" GridPane.columnIndex="0">Server:</Label>
+			<TextField fx:id="txfServer" GridPane.rowIndex="0"
+				GridPane.columnIndex="1" />
+			<Label GridPane.rowIndex="1" GridPane.columnIndex="0">Port:</Label>
+			<TextField fx:id="txfPort" GridPane.rowIndex="1"
+				GridPane.columnIndex="1" />
+		</GridPane>
+	</center>
+	<bottom>
+		<HBox>
+			<Button fx:id="btnConnOK" onAction="#OKButtonPressed">OK</Button>
+			<Button fx:id="btnConnCancel" cancelButton="true"
+				onAction="#CancelButtonPressed">Cancel</Button>
+		</HBox>
+	</bottom>
 </BorderPane>
 

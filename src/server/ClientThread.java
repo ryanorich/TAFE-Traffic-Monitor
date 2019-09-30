@@ -1,7 +1,5 @@
 package server;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -13,59 +11,56 @@ public class ClientThread extends Thread
 {
     //Socket socket;
     int location;
-     DataInputStream streamIn;
-     DataOutputStream streamOut;
+    DataInputStream streamIn;
+    DataOutputStream streamOut;
     ClientManager manager;
     boolean exit=false;
-    
+
     ClientThread(ClientManager manager, Socket socket, int loc) throws IOException
     {
         this.manager = manager;
         //this.socket = socket;
-        
+
         streamOut = new DataOutputStream(socket.getOutputStream());
         streamIn = new DataInputStream(socket.getInputStream());
         location = loc;
+        
+        //upon creation, send the loction to the client.
         streamOut.writeUTF(""+location);
-        
-        
-        
-        System.out.println("This is the Constructor for the  Client Thread");
-       
+
+
     }
-    
+
     public void run()
     {
-        System.out.println("This is the Run method for the Client Thread");
         String reading = "";
         while (!exit)
         {
-        try
-        {
-            //System.out.println("Waiting for a connection");
-        
+            try
+            {
+                Thread.sleep(100);
                 reading = streamIn.readUTF();
                 if (reading.contentEquals("Location"))
-                {
-                    System.out.println("Sending Location Information");
-                    //streamOut.writeUTF("7");
-                   
+                {// This case is not used - Location send prior to creating listener thread.
+                    
+                    streamOut.writeUTF(""+location);
+
                 }
                 else
                 {
-                System.out.println("Reading was " + reading);
-                System.out.println("Response from Manager: " + manager.getMessage());
-                manager.makeReading(reading);
+                    manager.makeReading(reading);
                 }
-      
-        } catch (IOException e)
-        {
-            // TODO Thread Closed - Stop listening?
-            e.printStackTrace();
-            //Stop the listening loop
-            break;
-        }
-        System.out.println("Completed 1 Read/Write Loop");
+
+            } catch (IOException e)
+            {
+                manager.server.addNotification("Client Disconnection Detected. Poll station to check status");
+                //Stop the listening loop
+                break;
+            } catch (InterruptedException e)
+            {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
         }
     }
 

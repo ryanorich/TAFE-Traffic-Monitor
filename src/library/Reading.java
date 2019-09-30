@@ -89,6 +89,7 @@ public class Reading
         this.averageVelocity = averageVelocity;
     }
     
+    @SuppressWarnings("deprecation")
     public Reading(String reading)
     {
         String parts[] = reading.split(",");
@@ -97,6 +98,7 @@ public class Reading
         String timeParts[] = parts[0].split(":");
         if (timeParts.length !=3)
             return;
+        
         time = new Time(Integer.parseInt(timeParts[0]), 
                         Integer.parseInt(timeParts[1]), 
                         Integer.parseInt(timeParts[2]));

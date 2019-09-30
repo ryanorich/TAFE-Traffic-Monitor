@@ -268,7 +268,7 @@ public class RRBinaryTree<T>
      */
     public ArrayList<T> getIndexed_AL()
     {
-        // TODO - Get max index size for creating array
+        // TODO - Get largest index size for creating array, instead of maximum index for tree level
         int width = getMaxDepth() + 1;
         int noOfElements = (int) java.lang.Math.pow(2, width) - 1;
         ArrayList<T> list = new ArrayList<T>(noOfElements);
@@ -315,9 +315,10 @@ public class RRBinaryTree<T>
      */
     public HashMap<Integer,T> getIndexed()
     {
-        // TODO - Get max index size for creating array
         int width = getMaxDepth() + 1;
         int noOfElements = (int) java.lang.Math.pow(2, width) - 1;
+        
+        if (noOfElements == 0) return null;
         HashMap<Integer,T> list = new HashMap<Integer, T>(noOfElements);
  
         _fillIndexed(list, head, 0);

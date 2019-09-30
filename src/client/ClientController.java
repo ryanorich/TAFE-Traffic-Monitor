@@ -1,6 +1,5 @@
 package client;
 
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Orientation;
@@ -9,26 +8,18 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
 import javafx.scene.shape.Polygon;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import library.Reading;
-import impl.org.controlsfx.control.validation.*;
-
 import java.io.IOException;
 import java.sql.Time;
 import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 import java.util.regex.Pattern;
 
 import org.controlsfx.control.StatusBar;
-import org.controlsfx.control.decoration.Decoration;
 import org.controlsfx.control.decoration.Decorator;
 import org.controlsfx.control.decoration.GraphicDecoration;
-
-
 
 /**
  * Controller for the Client FXML GUI
@@ -40,85 +31,122 @@ public class ClientController
 {
     Client client;
 
-    Node decTime, decLocation, decNoOfLanes, decTotalNoVehicles, decAverageNoVehicles, decAverageVelocity;
+    @FXML
+    private Label txtTitle;
+    @FXML
+    private TextField txfTime;
+    @FXML
+    private TextField txfLocation;
+    @FXML
+    private TextField txfNoOfLanes;
+    @FXML
+    private TextField txfTotalNoOfVehicles;
+    @FXML
+    private TextField txfAverageNoOfVehicles;
+    @FXML
+    private TextField txfAverageVelocity;
+    @FXML
+    private CheckBox chkTime;
+    @FXML
+    private CheckBox chkLocation;
+    @FXML
+    private CheckBox chkAverageNoVehicles;
+    @FXML
+    private Button btnSubmit;
+    @FXML
+    private Button btnExit;
+    @FXML
+    private Button btnConnect;
+    @FXML
+    private StatusBar stbStatus;
 
-
-    //Decoration decoration = new Decoration();
-
-    @FXML private Label txtTitle;
-    @FXML private TextField txfTime;
-    @FXML private TextField txfLocation;
-    @FXML private TextField txfNoOfLanes;
-    @FXML private TextField txfTotalNoOfVehicles;
-    @FXML private TextField txfAverageNoOfVehicles;
-    @FXML private TextField txfAverageVelocity;
-    @FXML private CheckBox chkTime;
-    @FXML private CheckBox chkLocation;
-    @FXML private CheckBox chkAverageNoVehicles;
-    @FXML private Button btnSubmit;
-    @FXML private Button btnExit;
-    @FXML private Button btnConnect;
-    @FXML private StatusBar stbStatus;
-
-    @FXML protected void chkTimeToggled(ActionEvent e)
+    /**
+     * Toggles between automatic and manual entry of the Time field
+     */
+    @FXML
+    protected void chkTimeToggled()
     {
-        
         if (chkTime.isSelected())
         {// Checkbox Selected - Manual Entry
             txfTime.setDisable(false);
             updateTime();
-        }
-        else
-        {//Checkbox not selectd - Automatic Entry
+        } else
+        {// Checkbox not selectd - Automatic Entry
             txfTime.setDisable(true);
             updateTime();
-
         }
     }
-    
-    @FXML protected void chkLocationToggled(ActionEvent e)
+
+   /**
+    * Toggles between automatic and manual entry of the Location field
+    */
+    @FXML
+    protected void chkLocationToggled()
     {
         if (chkLocation.isSelected())
         {// Checkbox Selected - Manual Entry
-            //Check if the default message is still entered
-            // TODO use Regex to check this
-            if (txfLocation.getText().equals("--TBA--"))
+
+            if (client.isConnected)
+            {// connected, threfore ensure that the location is set
+                txfLocation.setText("-");
+            } else
+            {// not connected, leave blank
                 txfLocation.setText("");
+            }
             txfLocation.setDisable(false);
-        }
-        else
-        {//Checkbox not selectd - Automatic Entry
-            // TODO - Check for conneciton, and set location.
+        } else
+        {// Checkbox not selectd - Automatic Entry
+            if (client.isConnected)
+            {
+                txfLocation.setText("" + client.location);
+            } else
+            {
+                txfLocation.setText("-");
+            }
             txfLocation.setDisable(true);
         }
-        
+
     }
-    
-    @FXML protected void chkAverageNoVehiclesToggled(ActionEvent e)
+
+    /**
+     * Toggles between automatica and manual entry o the Average Numner of Vehicles field
+     * @param e
+     */
+    @FXML
+    protected void chkAverageNoVehiclesToggled()
     {
         if (chkAverageNoVehicles.isSelected())
         {// Checkbox Selected - Manual Entry
             txfAverageNoOfVehicles.setDisable(false);
-        }
-        else
-        {//Checkbox not selectd - Automatic Entry
-            // TODO - Use Regex to check if numeric value entered.
-            System.out.println("Checkbox Av No Vehicles Unselected");
+            txfAverageNoOfVehicles.setText("");
+        } else
+        {// Checkbox not selectd - Automatic Entry
             txfAverageNoOfVehicles.setDisable(true);
+            txfAverageNoOfVehicles.setText("-");
         }
     }
-    
-    @FXML protected void exit (ActionEvent e)
+
+    /**
+     * Exits the application
+     */
+    @FXML
+    protected void exit()
     {
         System.exit(0);
     }
-    @FXML protected void submitReading (ActionEvent e)
+
+    /**
+     * Validates, then sends reading to the connected server
+     */
+    @SuppressWarnings("deprecation")
+    @FXML
+    protected void submitReading()
     {
         Time time = null;
-        int loc=0, nolns=0, tnv=0, anv=0, avel=0;
+        int loc = 0, nolns = 0, tnv = 0, anv = 0, avel = 0;
 
         boolean isValid = true;
-        //Validation Checks
+        // Validation Checks
 
         Decorator.removeAllDecorations(txfTime);
         Decorator.removeAllDecorations(txfLocation);
@@ -127,152 +155,136 @@ public class ClientController
         Decorator.removeAllDecorations(txfAverageNoOfVehicles);
         Decorator.removeAllDecorations(txfAverageVelocity);
         if (!chkTime.isSelected())
-        {//Automatic Time
+        {// Automatic Time
 
             LocalTime lt = LocalTime.now();
             time = new Time(lt.getHour(), lt.getMinute(), lt.getSecond());
             txfTime.setText(time.toString());
 
-        }
-        else
-        {//Manual Entry and Validation
-           // Decorator.removeAllDecorations(txfTime);
+        } else
+        {// Manual Entry and Validation
+         // Decorator.removeAllDecorations(txfTime);
             if (Pattern.matches("^[0-2][0-9]:[0-5][0-9]:[0-5][0-9]$", txfTime.getText()))
             {
                 String t[] = txfTime.getText().split(":");
-                time = new Time(Integer.parseInt(t[0]), 
-                                Integer.parseInt(t[1]), 
-                                Integer.parseInt(t[2]));
-                System.out.println("Time format is OK");
-            }
-            else
+                time = new Time(Integer.parseInt(t[0]), Integer.parseInt(t[1]), Integer.parseInt(t[2]));
+
+            } else
             {// Invalid entry
-      
+
                 isValid = false;
-                
-                Node tri = new Polygon(0,0,10,0,0,10);
+
+                Node tri = new Polygon(0, 0, 10, 0, 0, 10);
                 tri.setStyle("-fx-fill: RED");
                 Tooltip tt = new Tooltip("Required 24h Date Format: hh:mm:ss");
                 Tooltip.install(tri, tt);
-                Decorator.addDecoration( txfTime, new GraphicDecoration( tri, Pos.TOP_LEFT));
+                Decorator.addDecoration(txfTime, new GraphicDecoration(tri, Pos.TOP_LEFT));
             }
 
         }
 
         if (!chkLocation.isSelected())
-        { //Automatic Location
+        { // Automatic Location
             loc = client.location;
-        }
-        else
-        { //Manual Selection
+        } else
+        { // Manual Selection
             if (Pattern.matches("^\\d+$", txfLocation.getText()))
             {// entry is valid
                 loc = Integer.parseInt(txfLocation.getText());
-            }
-            else
-            {// Invalid entry - 
+            } else
+            {// Invalid entry -
                 isValid = false;
-                Node tri = new Polygon(0,0,10,0,0,10);
+                Node tri = new Polygon(0, 0, 10, 0, 0, 10);
                 tri.setStyle("-fx-fill: RED");
                 Tooltip tt = new Tooltip("Requires positive integer value");
                 Tooltip.install(tri, tt);
-                Decorator.addDecoration( txfLocation, new GraphicDecoration( tri, Pos.TOP_LEFT));
+                Decorator.addDecoration(txfLocation, new GraphicDecoration(tri, Pos.TOP_LEFT));
             }
             loc = client.location;
         }
-        
+
         if (Pattern.matches("^(?!0+$)\\d+$", txfNoOfLanes.getText()))
         {// Valid Entry
             nolns = Integer.parseInt(txfNoOfLanes.getText());
-        }
-        else
+        } else
         {// Invalid Entry
             isValid = false;
-                    
-            Node tri = new Polygon(0,0,10,0,0,10);
+
+            Node tri = new Polygon(0, 0, 10, 0, 0, 10);
             tri.setStyle("-fx-fill: RED");
             Tooltip tt = new Tooltip("Requires positive integer value greater than 0");
             Tooltip.install(tri, tt);
-            Decorator.addDecoration( txfNoOfLanes, new GraphicDecoration( tri, Pos.TOP_LEFT));
+            Decorator.addDecoration(txfNoOfLanes, new GraphicDecoration(tri, Pos.TOP_LEFT));
         }
-        
+
         if (Pattern.matches("^\\d+$", txfTotalNoOfVehicles.getText()))
         {// Valid Entry
             tnv = Integer.parseInt(txfTotalNoOfVehicles.getText());
-        }
-        else
+        } else
         {// Invalid Entry
-             isValid = false;
-            Node tri = new Polygon(0,0,10,0,0,10);
+            isValid = false;
+            Node tri = new Polygon(0, 0, 10, 0, 0, 10);
             tri.setStyle("-fx-fill: RED");
             Tooltip tt = new Tooltip("Requires positive integer value");
             Tooltip.install(tri, tt);
-            Decorator.addDecoration( txfTotalNoOfVehicles, new GraphicDecoration( tri, Pos.TOP_LEFT));
+            Decorator.addDecoration(txfTotalNoOfVehicles, new GraphicDecoration(tri, Pos.TOP_LEFT));
         }
-        
 
         if (!chkAverageNoVehicles.isSelected())
-        { //Automatic Value
+        { // Automatic Value
             if (tnv == 0 || nolns == 0)
             { // Either no vehicles, or an error in number of lanes.
                 anv = 0;
-            }
-            else
+            } else
             {
-                anv = tnv/nolns;
+                anv = tnv / nolns;
             }
-        }
-        else
-        { //Manual Entry
-            
+        } else
+        { // Manual Entry
+
             if (Pattern.matches("^\\d+$", txfAverageNoOfVehicles.getText()))
             {// Valid entry
                 anv = Integer.parseInt(txfAverageNoOfVehicles.getText());
-            }
-            else
+            } else
             {// Invalid Entry
                 isValid = false;
-                Node tri = new Polygon(0,0,10,0,0,10);
+                Node tri = new Polygon(0, 0, 10, 0, 0, 10);
                 tri.setStyle("-fx-fill: RED");
                 Tooltip tt = new Tooltip("Requires positive integer value");
                 Tooltip.install(tri, tt);
-                Decorator.addDecoration( txfAverageNoOfVehicles, new GraphicDecoration( tri, Pos.TOP_LEFT));
+                Decorator.addDecoration(txfAverageNoOfVehicles, new GraphicDecoration(tri, Pos.TOP_LEFT));
             }
-        
+
         }
-        
+
         if (Pattern.matches("^\\d+$", txfAverageVelocity.getText()))
         {// Valid Entry
             avel = Integer.parseInt(txfAverageVelocity.getText());
-        }
-        else
+        } else
         {// Invalid Entry
             isValid = false;
-            Node tri = new Polygon(0,0,10,0,0,10);
+            Node tri = new Polygon(0, 0, 10, 0, 0, 10);
             tri.setStyle("-fx-fill: RED");
             Tooltip tt = new Tooltip("Requires positive integer value");
             Tooltip.install(tri, tt);
-            Decorator.addDecoration( txfAverageVelocity, new GraphicDecoration( tri, Pos.TOP_LEFT));
+            Decorator.addDecoration(txfAverageVelocity, new GraphicDecoration(tri, Pos.TOP_LEFT));
         }
-        
 
         if (isValid)
         {
-        
-        Reading reading = new Reading (time, loc, nolns, tnv, anv, avel);
-
-        System.out.println("Submitting Reading:");
-       
+            Reading reading = new Reading(time, loc, nolns, tnv, anv, avel);
             client.SendReading(reading.toString());
             stbStatus.setText("Reading Submitted");
-        }
-        else
+        } else
         {
             stbStatus.setText("Invalid Reading!!");
         }
 
     }
-    
+
+    /**
+     * Disconnection from the server, and GUI update
+     */
     protected void setDisconnect()
     {
         client.disconnectFromServer();
@@ -283,10 +295,12 @@ public class ClientController
         txfLocation.setText("");
     }
 
-    @FXML protected void Connect ()
+    /**
+     * Connects or Disconnects to the server, and updates GUI, based on the current connection state.
+     */
+    @FXML
+    protected void Connect()
     {
-        System.out.println("Connecting / Disconnecting");
-
         if (client.isConnected)
         {// Currently connected - disconnect
             client.disconnectFromServer();
@@ -295,89 +309,93 @@ public class ClientController
             btnSubmit.setDisable(true);
             client.isConnected = false;
             txfLocation.setText("");
-        }
-        else
+        } else
         {// Not currently connected - connect
-        stbStatus.setText("Conecting to Server");
-        
-        //Dialogue to set the connection
-       // stage.setTitle("Traffic Station");
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("ConnectionDialog.fxml"));
-        Pane root = null;
-        try
-        {
-            root = loader.load();
-        } catch (IOException e1)
-        {
-            // TODO Auto-generated catch block
-            e1.printStackTrace();
-        }
-        ConnectionDialogController controller = ( ConnectionDialogController) loader.getController();
-        controller.passConnection(client.serverCon);
+            stbStatus.setText("Conecting to Server");
 
-        Scene scene = new Scene(root);
-        Stage stage = new Stage();
-        stage.initModality(Modality.APPLICATION_MODAL);
-        stage.setScene(scene);
-        stage.setOnCloseRequest(e1 -> stage.close());
-        stage.showAndWait();
-        //stage.getUserData();
-       // stage.setOnCloseRequest(e -> System.exit(0));
+            // Dialogue to set the connection
+            // stage.setTitle("Traffic Station");
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("ConnectionDialog.fxml"));
+            Pane root = null;
+            try
+            {
+                root = loader.load();
+            } catch (IOException e1)
+            {
+                // TODO Auto-generated catch block
+                e1.printStackTrace();
+            }
+            ConnectionDialogController controller = (ConnectionDialogController) loader.getController();
+            controller.passConnection(client.serverCon);
 
-        if (controller.OK)
-        {
-        if (client.connectToServer())
-        {
-            btnConnect.setText("Disconnect");
-            stbStatus.setText("Connected to "+client.getServerDetails());
-            btnSubmit.setDisable(false);
-            client.isConnected = true;
-        }
-        else
-        {
-            stbStatus.setText("Connection Failed!");
-            client.isConnected = false;
-        }
-        }
-        }
-        
+            Scene scene = new Scene(root);
+            Stage stage = new Stage();
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setScene(scene);
+            stage.setOnCloseRequest(e1 -> stage.close());
+            stage.showAndWait();
 
+            if (controller.OK)
+            {
+                if (client.connectToServer())
+                {
+                    btnConnect.setText("Disconnect");
+                    stbStatus.setText("Connected to " + client.serverCon);
+                    btnSubmit.setDisable(false);
+                    client.isConnected = true;
+                } else
+                {
+                    stbStatus.setText("Connection Failed!");
+                    client.isConnected = false;
+                }
+            }
+        }
     }
 
+    /**
+     * Updates the Time Text Field to dispoaly the current time
+     */
     private void updateTime()
     {
         LocalTime lt = LocalTime.now();
+        @SuppressWarnings("deprecation")
         Time time = new Time(lt.getHour(), lt.getMinute(), lt.getSecond());
         txfTime.setText(time.toString());
     }
-    
+
+    /**
+     * Updates the TextField with the given location number
+     * @param loc the location number to display
+     */
     protected void updateLocation(int loc)
     {
-        txfLocation.setText(""+loc);
+        txfLocation.setText("" + loc);
     }
 
+    /**
+     * Passes a reference to the Client instance that creats the GUI.
+     * @param client Refrence to the Client instance
+     */
     protected void passReference(Client client)
     {
         this.client = client;
     }
 
+    /**
+     * Set-up for GUI element
+     */
     public void initialize()
     {
-        System.out.println("Initializing the Client Controller");
         updateTime();
         txfTime.setDisable(true);
-        txfLocation.setText("--TBA--");
+        txfLocation.setText("-");
         txfLocation.setDisable(true);
-        txfAverageNoOfVehicles.setText("----");
+        txfAverageNoOfVehicles.setText("-");
         txfAverageNoOfVehicles.setDisable(true);
-
         btnSubmit.setDisable(true);
-
         stbStatus.getLeftItems().add(btnConnect);
         Separator sep = new Separator();
         sep.setOrientation(Orientation.VERTICAL);
         stbStatus.getLeftItems().add(sep);
-
     }
-
 }

@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
+<!-- GUI for client stations -->
+
 <?language javascript?>
 
 <?import javafx.scene.layout.*?>
@@ -16,81 +19,84 @@
 
 
 <BorderPane xmlns:fx="http://javafx.com/fxml/1"
-    fx:controller="client.ClientController">
-    
-    
-    <center>
-    
-<VBox  alignment="CENTER" spacing="20">
-	<padding>
-		<Insets left="50" right="50" top="20" bottom="20" />
-	</padding>
-	<Label text="Monitoring Station" fx:id="txtTitle"
-		style="-fx-font: NORMAL 40 Tahoma;" />
+	fx:controller="client.ClientController">
+	<center>
 
-	<GridPane alignment="CENTER" hgap="10.0" vgap="10.0">
+		<VBox alignment="CENTER" spacing="20">
+			<padding>
+				<Insets left="50" right="50" top="20" bottom="20" />
+			</padding>
+			<Label text="Monitoring Station" fx:id="txtTitle"
+				style="-fx-font: NORMAL 40 Tahoma;" />
 
-		<Label text="Time" GridPane.columnIndex="0"
-			GridPane.rowIndex="0" />
-		<TextField fx:id="txfTime" GridPane.columnIndex="1"
-			GridPane.rowIndex="0" promptText="HH:MM:SS"/>
-		<CheckBox fx:id="chkTime" text="Enter Manualy" GridPane.columnIndex="2"
-			GridPane.rowIndex="0" onAction="#chkTimeToggled" />
+			<GridPane alignment="CENTER" hgap="10.0" vgap="10.0">
 
-		<Label text="Location" GridPane.columnIndex="0"
-			GridPane.rowIndex="1" />
-		<TextField fx:id="txfLocation" GridPane.columnIndex="1"
-			GridPane.rowIndex="1" />
-		<CheckBox fx:id="chkLocation" text="Enter Manualy" GridPane.columnIndex="2"
-			GridPane.rowIndex="1" onAction="#chkLocationToggled"/>
+				<Label text="Time" GridPane.columnIndex="0"
+					GridPane.rowIndex="0" />
+				<TextField fx:id="txfTime" GridPane.columnIndex="1"
+					GridPane.rowIndex="0" promptText="HH:MM:SS" />
+				<CheckBox fx:id="chkTime" text="Enter Manualy"
+					GridPane.columnIndex="2" GridPane.rowIndex="0"
+					onAction="#chkTimeToggled" />
 
-		<Label text="# Lanes" GridPane.columnIndex="0"
-			GridPane.rowIndex="2" />
-		<TextField fx:id="txfNoOfLanes" GridPane.columnIndex="1"
-			GridPane.rowIndex="2" />
+				<Label text="Location" GridPane.columnIndex="0"
+					GridPane.rowIndex="1" />
+				<TextField fx:id="txfLocation" GridPane.columnIndex="1"
+					GridPane.rowIndex="1" />
+				<CheckBox fx:id="chkLocation" text="Enter Manualy"
+					GridPane.columnIndex="2" GridPane.rowIndex="1"
+					onAction="#chkLocationToggled" />
 
-		<Label text="Total # Vehicles" GridPane.columnIndex="0"
-			GridPane.rowIndex="3" />
-		<TextField fx:id="txfTotalNoOfVehicles"
-			GridPane.columnIndex="1" GridPane.rowIndex="3" />
+				<Label text="# Lanes" GridPane.columnIndex="0"
+					GridPane.rowIndex="2" />
+				<TextField fx:id="txfNoOfLanes" GridPane.columnIndex="1"
+					GridPane.rowIndex="2" />
 
-		<Label text="Average # Vehicles:" GridPane.columnIndex="0"
-			GridPane.rowIndex="4" />
-		<TextField fx:id="txfAverageNoOfVehicles"
-			GridPane.columnIndex="1" GridPane.rowIndex="4" />
-		<CheckBox fx:id="chkAverageNoVehicles" text="Enter Manualy" GridPane.columnIndex="2"
-			GridPane.rowIndex="4" onAction="#chkAverageNoVehiclesToggled" />
+				<Label text="Total # Vehicles" GridPane.columnIndex="0"
+					GridPane.rowIndex="3" />
+				<TextField fx:id="txfTotalNoOfVehicles"
+					GridPane.columnIndex="1" GridPane.rowIndex="3" />
 
-		<Label text="Average Velocity"  GridPane.columnIndex="0"
-			GridPane.rowIndex="5" />
-		<TextField fx:id="txfAverageVelocity" 
-			GridPane.columnIndex="1" GridPane.rowIndex="5" />
+				<Label text="Average # Vehicles:" GridPane.columnIndex="0"
+					GridPane.rowIndex="4" />
+				<TextField fx:id="txfAverageNoOfVehicles"
+					GridPane.columnIndex="1" GridPane.rowIndex="4" />
+				<CheckBox fx:id="chkAverageNoVehicles" text="Enter Manualy"
+					GridPane.columnIndex="2" GridPane.rowIndex="4"
+					onAction="#chkAverageNoVehiclesToggled" />
 
-	</GridPane>
+				<Label text="Average Velocity" GridPane.columnIndex="0"
+					GridPane.rowIndex="5" />
+				<TextField fx:id="txfAverageVelocity"
+					GridPane.columnIndex="1" GridPane.rowIndex="5" />
 
-	<HBox>
-		<Button text="Submit" fx:id="btnSubmit" onAction="#submitReading"
-			prefWidth="100" />
-		<Region prefWidth="20" />
-		<Button text="Exit" fx:id="btnExit" onAction="#exit"
-			prefWidth="100" />
-		<Button text="Connect" fx:id="btnConnect" onAction="#Connect"></Button>
-	</HBox>
-	
-</VBox>
-</center>
-<bottom>
-<StatusBar text="Not Connected" fx:id="stbStatus">
+			</GridPane>
 
-    </StatusBar>
-</bottom>
-            <fx:script>
-                function updateTime() {
-                    var now = new Date();
-                    var atime = "".concat(now.getHours(), now.getMinutes(), now.getSeconds());
-                txfAverageVelocity.text = atime;
-            }
-            </fx:script>
+			<HBox>
+				<Button text="Submit" fx:id="btnSubmit"
+					onAction="#submitReading" prefWidth="100" />
+				<Region prefWidth="20" />
+				<Button text="Exit" fx:id="btnExit" onAction="#exit"
+					prefWidth="100" />
+				<Button text="Connect" fx:id="btnConnect" onAction="#Connect"></Button>
+			</HBox>
+
+		</VBox>
+	</center>
+	<bottom>
+		<StatusBar text="Not Connected" fx:id="stbStatus">
+
+		</StatusBar>
+	</bottom>
+	<fx:script>
+		function updateTime() {
+		var now = new Date();
+		var atime =
+		"".concat(now.getHours(), now.getMinutes(),
+		now.getSeconds());
+		txfAverageVelocity.text = atime;
+		}
+	</fx:script>
 
 </BorderPane>
 

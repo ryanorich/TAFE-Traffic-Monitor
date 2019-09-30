@@ -1,15 +1,11 @@
 package server;
 
-import java.io.File;
 import java.io.IOException;
-//import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
-
-import javafx.collections.ObservableList;
-//import javafx.application.Application;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -18,11 +14,11 @@ import javafx.scene.Scene;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
-import javafx.stage.FileChooser;
-import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import library.*;
+import library.RRBinaryTree;
+import library.RRLinkedList;
+import library.Reading;
 import server.Server.sortOrder;
 
 /**
@@ -38,7 +34,6 @@ public class ServerController
     private Server server;
     public int test;
     ObservableList<Reading> dispalyReadings;
-    private Stage stage;
 
     @FXML
     private TableView<Reading> tbvRecords;
@@ -52,7 +47,7 @@ public class ServerController
     @FXML
     private void btnSortByTime(ActionEvent e)
     {
-        System.out.println("Sorting table by Time");
+        
         txaNotifications.appendText("Sorting by Time\n");
         server.sortReadings(sortOrder.TIME);
     }
@@ -60,7 +55,7 @@ public class ServerController
     @FXML
     private void btnSortByVehicles(ActionEvent e)
     {
-        System.out.println("Sorting table by Location");
+        
         txaNotifications.appendText("Sorting by Location\n");
         server.sortReadings(sortOrder.VEHICLES);
 
@@ -69,7 +64,6 @@ public class ServerController
     @FXML
     private void btnSortByVelocity(ActionEvent e)
     {
-        System.out.println("Sorting table by Velocity");
         txaNotifications.appendText("Sorting by Velocity\n");
         server.sortReadings(sortOrder.VELOCITY);
     }
@@ -77,16 +71,14 @@ public class ServerController
     @FXML
     private void btnPollStations(ActionEvent e)
     {
-        System.out.println("Polling Stations");
-        txaNotifications.appendText("Polling Stations\n");
+        AddNotification("Polling Stations");
         server.testClientConnections();
     }
 
     @FXML
     private void btnClearNotifications(ActionEvent e)
     {
-        System.out.println("Clearing Norificaiton Area");
-        txaNotifications.setText("...\n");
+        txaNotifications.setText("");
     }
     
     protected void AddNotification(String notification)
@@ -94,29 +86,6 @@ public class ServerController
         txaNotifications.appendText(notification+"\n");
     }
 
-    /* Lists are displayed automatically
-    @FXML
-    private void btnDisplayPreOrder(ActionEvent e)
-    {
-        System.out.println("Displaying in Pre-Order");
-        txaBinaryTree.appendText("Displaying in Pre-Order\n");
-    }
-
-    @FXML
-    private void btnDisplayInOrder(ActionEvent e)
-    {
-        System.out.println("Displaying in In-Order");
-        txaBinaryTree.appendText("Displaying in In-Order\n");
-    }
-
-    @FXML
-    private void btnDisplayPostOrder(ActionEvent e)
-    {
-        System.out.println("Displaying in Post-Order");
-        txaBinaryTree.appendText("Displaying in Post-Order\n");
-    }
-*/
-    
     @FXML
     private void btnSaveInOrder(ActionEvent e)
     {
@@ -140,7 +109,6 @@ public class ServerController
     @FXML
     private void btnDiagram(ActionEvent e) throws IOException
     {
-        System.out.println("Showing Diagram");
 
         //txaBinaryTree.appendText("Showing Diagram\n");
         // Application.launch(testing.TestingCharts.class, new String[] {});
@@ -155,7 +123,7 @@ public class ServerController
         Scene scene2 = new Scene(parent, 300, 200);
         Stage stage2 = new Stage();
         
-        System.out.println("Tree Depth is "+ server.getBinaryTree().getMaxDepth());
+
         treeDisplayController.initiliseData(server.getIndexedBinaryTree());
         
         stage2.initModality(Modality.APPLICATION_MODAL);
@@ -173,7 +141,7 @@ public class ServerController
     protected void setupReadings(ArrayList<Reading> readings)
     {
         dispalyReadings = FXCollections.observableArrayList(readings);
-        System.out.println("Set up display list - " + dispalyReadings.get(0));
+
         TableColumn<Reading, String> col;
 
         col = (TableColumn<Reading, String>) tbvRecords.getColumns().get(0);
@@ -215,27 +183,22 @@ public class ServerController
 
     // Debug Buttons
     @FXML
-    protected void btnDBGAddRecord()
+    protected void btnDBGAddReading()
     {
-        txaNotifications.appendText("Adding Record. \n");
         server.addRandomReading(server.getReadings());
     }
 
     @FXML
-    protected void btnDBGReloadTable()
+    protected void btnDBGAdd10Readings()
     {
-        txaNotifications.appendText("Reloading Table Data.\n");
-        dispalyReadings = FXCollections.observableArrayList(server.getReadings());
-        tbvRecords.setItems(dispalyReadings);
+        for (int i= 0; i<10; i++)
+        {
+            btnDBGAddReading();
+        }
+
     }
 
-    @FXML
-    protected void btnDBGRefreshTable()
-    {
-        txaNotifications.appendText("Refreshing Table.\n");
 
-        tbvRecords.refresh();
-    }
 
     /**
      * Displays reading data in a linked list
@@ -244,7 +207,6 @@ public class ServerController
      */
     protected void DiplayLinkedList(RRLinkedList<Reading> rrll)
     {
-        // TODO- Better Format this list
         txaLinkedList.setText(" HEAD ⟺ ");
         Reading r;
         for (int i = 0; i < rrll.getCount(); i++)

@@ -1,10 +1,7 @@
-<!--
-    Defines the GUI View (V in MVC) for the Traffic Server.
-    
-    author: Ryan Rich
-
 <?xml version="1.0" encoding="UTF-8"?>
--->
+
+<!-- GUI for server application -->
+
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.layout.VBox?>
@@ -21,7 +18,7 @@
 
 <AnchorPane xmlns:fx="http://javafx.com/fxml/1"
 	fx:controller="server.ServerController">
-	
+
 	<VBox spacing="10">
 		<padding>
 			<Insets top="10" bottom="10" right="10" left="10" />
@@ -31,22 +28,26 @@
 		<HBox spacing="10">
 			<VBox>
 				<Label text="Traffic Monitoring Data" />
-				
-				
-					<TableView fx:id="tbvRecords" editable="false"  >
-						<columns >
-							<TableColumn text="Time" sortable="false" resizable="false"  >
-						
-							</TableColumn>
-						      
-							<TableColumn text="Location" sortable="false" resizable="false" />
-							<TableColumn text="Av.Vehicle#" sortable="false" resizable="false"/>
-							<TableColumn text="Av.Velocity" sortable="false" resizable="false"/>
-						</columns>
 
-					</TableView>
 
-			
+				<TableView fx:id="tbvRecords" editable="false">
+					<columns>
+						<TableColumn text="Time" sortable="false"
+							resizable="false">
+
+						</TableColumn>
+
+						<TableColumn text="Location" sortable="false"
+							resizable="false" />
+						<TableColumn text="Av.Vehicle#" sortable="false"
+							resizable="false" />
+						<TableColumn text="Av.Velocity" sortable="false"
+							resizable="false" />
+					</columns>
+
+				</TableView>
+
+
 				<Region prefHeight="10" />
 				<Label text="Sort By:" />
 				<HBox>
@@ -55,11 +56,12 @@
 					<Button text="Velocity" onAction="#btnSortByVelocity" />
 
 				</HBox>
-				<HBox >
-				    <Button text="#Add Record" onAction="#btnDBGAddRecord" />
-				    <Button text="#Reload Table" onAction="#btnDBGReloadTable" />
-				    <Button text="#Refresh Table" onAction="#btnDBGRefreshTable" />
-				    
+				<HBox>
+					<Button text="#Add 1 Reading" onAction="#btnDBGAddReading" />
+					<Button text="#Add 10 Readings"
+						onAction="#btnDBGAdd10Readings" />
+
+
 				</HBox>
 			</VBox>
 			<VBox>
@@ -74,48 +76,44 @@
 		</HBox>
 		<Label text="Linked List:" />
 
-		<TextArea fx:id="txaLinkedList" prefHeight="100" wrapText="true"/>
+		<TextArea fx:id="txaLinkedList" prefHeight="100"
+			wrapText="true" />
 		<Label text="" />
 
-		<TextArea fx:id="txaBinaryTree" prefHeight="100" wrapText="true"/>
+		<TextArea fx:id="txaBinaryTree" prefHeight="100"
+			wrapText="true" />
 		<HBox>
-		
-		<BorderPane>
-                <top>
-                    <Label text="In-Order" />
-                </top>
-                <!-- <left>
-                    <Button text="Diaplay" onAction="#btnDisplayInOrder" />
-                </left>-->
-                <bottom>
-                    <Button text="Save" onAction="#btnSaveInOrder" />
-                </bottom>
-            </BorderPane>
-            <Region prefWidth="20" />
-            
+
+			<BorderPane>
+				<top>
+					<Label text="In-Order" />
+				</top>
+				<!-- <left> <Button text="Diaplay" onAction="#btnDisplayInOrder" /> </left> -->
+				<bottom>
+					<Button text="Save" onAction="#btnSaveInOrder" />
+				</bottom>
+			</BorderPane>
+			<Region prefWidth="20" />
+
 			<BorderPane>
 				<top>
 					<Label text="Pre-Order" />
 				</top>
-				<!--  
-				<left>
-					<Button text="Diaplay" onAction="#btnDisplayPreOrder" />
-				</left>
-				-->
+				<!-- <left> <Button text="Diaplay" onAction="#btnDisplayPreOrder" /> 
+					</left> -->
 				<bottom>
 					<Button text="Save" onAction="#btnSavePreOrder" />
 				</bottom>
 			</BorderPane>
 			<Region prefWidth="20" />
 
-			
+
 			<BorderPane>
 				<top>
 					<Label text="Post-Order" />
 				</top>
-				<!-- <left>
-					<Button text="Diaplay" onAction="#btnDisplayPostOrder" />
-				</left>-->
+				<!-- <left> <Button text="Diaplay" onAction="#btnDisplayPostOrder" /> 
+					</left> -->
 				<bottom>
 					<Button text="Save" onAction="#btnSavePostOrder" />
 				</bottom>
@@ -123,14 +121,14 @@
 			<Region prefWidth="20" />
 			<BorderPane>
 				<top>
-					<Label text="Diagram"  />
+					<Label text="Diagram" />
 				</top>
 				<left>
-					<Button text="Diaplay" onAction="#btnDiagram"/>
+					<Button text="Diaplay" onAction="#btnDiagram" />
 				</left>
 			</BorderPane>
 		</HBox>
-   
+
 	</VBox>
 
 </AnchorPane>

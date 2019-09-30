@@ -1,9 +1,7 @@
 package server;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-
 import javafx.fxml.FXML;
 import javafx.scene.control.Tooltip;
 import javafx.scene.layout.AnchorPane;
@@ -12,7 +10,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
-
 import library.Reading;
 
 /**
@@ -40,6 +37,7 @@ public class TreeDisplayController
      */
     public void initiliseData(HashMap<Integer, Reading> iBT)
     {
+        if (iBT == null) return;
         // Sets the delays and durations for tooltops.
         library.FXHelper.setupCustomTooltipBehavior(5, 100000, 5);
         // Assign the indexed binary tree
@@ -153,8 +151,6 @@ public class TreeDisplayController
      */
     private int getNodeX(int index)
     {
-        // TODO - Check spacing differences bottom two layers - some nodes look like
-        // they line up.
         int depth = depth(index), x = 0;
 
         // Offset for the node from the beginning of the layer.

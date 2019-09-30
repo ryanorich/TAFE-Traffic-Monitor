@@ -1,11 +1,9 @@
 package client;
 
-import java.awt.Event;
-import java.util.regex.Pattern;
 
+import java.util.regex.Pattern;
 import org.controlsfx.control.decoration.Decorator;
 import org.controlsfx.control.decoration.GraphicDecoration;
-
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -17,7 +15,7 @@ import javafx.stage.Stage;
 
 /**
  * Controller for the Connection Dialogue
- * @author ryan
+ * @author Ryan Rich
  *
  */
 public class ConnectionDialogController
@@ -81,19 +79,23 @@ public class ConnectionDialogController
   
     }
     
+    /**
+     * Closes the connection window
+     */
     @FXML private void CancelButtonPressed()
     {
         Stage stage = (Stage) btnConnCancel.getScene().getWindow();
         stage.close();
     }
     
+    /**
+     * Populates the GUI with the current server details
+     * @param conn the current server connection
+     */
     protected void passConnection(Connection conn)
     {
         serverConn = conn;
         txfServer.setText(serverConn.server);
         txfPort.setText(""+serverConn.port);
     }
-    
-    
-
 }
