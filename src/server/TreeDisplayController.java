@@ -24,21 +24,22 @@ public class TreeDisplayController
     private HashMap<Integer, Reading> indexedBT;
     private int MAXINDEX;
     private int MAXDEPTH;
-    private int NODESIZE = 30;
-    private int NODERAD = NODESIZE / 2;
-    private int LEVELSPACING = 100;
-    private int NODESPACING = 35;
-    private int PADDING = 20;
+    private final int NODESIZE = 30;
+    private final int NODERAD = NODESIZE / 2;
+    private final int LEVELSPACING = 100;
+    private final int NODESPACING = 35;
+    private final int PADDING = 20;
 
     /**
-     * Initilises the data, and draws the tree.
+     * Initialises the data, and draws the tree.
      * 
      * @param iBT The indexed Binary Tree data
      */
-    public void initiliseData(HashMap<Integer, Reading> iBT)
+    public void drawTree(HashMap<Integer, Reading> iBT)
     {
+        ap.getChildren().clear();
         if (iBT == null) return;
-        // Sets the delays and durations for tooltops.
+        // Sets the delays and durations for tool tips.
         library.FXHelper.setupCustomTooltipBehavior(5, 100000, 5);
         // Assign the indexed binary tree
         this.indexedBT = iBT;

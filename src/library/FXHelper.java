@@ -12,6 +12,7 @@ import javafx.util.Duration;
 
 /**
  * Helper class for JavaFX
+ * 
  * @author Ryan Rich
  *
  */
@@ -42,7 +43,6 @@ public class FXHelper
      * @param closeDelayInMillis        Time after loosing focus before closing
      */
     @SuppressWarnings({"rawtypes", "unchecked"}) 
-
     public static void setupCustomTooltipBehavior(int openDelayInMillis, int visibleDurationInMillis, int closeDelayInMillis) {
         try {
              
@@ -55,28 +55,28 @@ public class FXHelper
                     break;
                 }
             }
-            if (TTBehaviourClass == null) {
-                // abort
+            if (TTBehaviourClass == null) 
+            {// abort
                 return;
             }
             
             Constructor constructor = TTBehaviourClass.getDeclaredConstructor(
                     Duration.class, Duration.class, Duration.class, boolean.class);
-            if (constructor == null) {
-                // abort
+            if (constructor == null) 
+            {// abort
                 return;
             }
             constructor.setAccessible(true);
             Object newTTBehaviour = constructor.newInstance(
                     new Duration(openDelayInMillis), new Duration(visibleDurationInMillis), 
                     new Duration(closeDelayInMillis), false);
-            if (newTTBehaviour == null) {
-                // abort
+            if (newTTBehaviour == null) 
+            {// abort
                 return;
             }
             Field ttbehaviourField = Tooltip.class.getDeclaredField("BEHAVIOR");
-            if (ttbehaviourField == null) {
-                // abort
+            if (ttbehaviourField == null) 
+            {// abort
                 return;
             }
             ttbehaviourField.setAccessible(true);

@@ -10,10 +10,11 @@ import java.util.List;
 import library.Reading;
 import server.ClientThread;
 
-
-// Crates a socket, listens for connection, and instantiates client threads 
-
-
+/**
+ * Class for creating and managing socket connection to stations.
+ * @author Ryan Rich
+ *
+ */
 public class ClientManager extends Thread
 {
     int port;
@@ -25,6 +26,9 @@ public class ClientManager extends Thread
     boolean exit = false;
     Server server;
 
+    /**
+     * Closes down all client listeners, and the conneciton listener.
+     */
     protected void exit()
     {
         exit = true;
@@ -34,67 +38,57 @@ public class ClientManager extends Thread
         }
     }
 
+    /**
+     * Constructor
+     * @param server the server name
+     * @param port the server connection port
+     */
     protected ClientManager(Server server, int port)
     {
         this.server = server;
         this.port = port;
-
-
     }
 
     public void run()
-    {// Create a thread, and listen for connection.
-
+    {// create a thread, and listen for connection.
         try
         {
             serverSocket = new ServerSocket(port);
-
-
             while (!exit)
             {
                 Thread.sleep(100);
-
+                // wait for connection request, then create
                 socket = serverSocket.accept();
-
-
                 ClientThread clientThread = null;
-
                 clientThread = new ClientThread(this, socket, nextLocation);
                 nextLocation++;
-
                 clientThreads.add(clientThread);
                 clientThread.start();
-
                 server.addNotification("Station added at Location "+clientThread.location);
-
-
             }
-        } catch (IOException | InterruptedException e1)
+        } catch (IOException | InterruptedException e)
         {
-            // TODO Auto-generated catch block
-            e1.printStackTrace();
+            // exception caused by thread operations, or by interupted sleep
+            e.printStackTrace();
         }
-
-
     }
 
-
-
+    /**
+     * Cycles through all connection, and test by sending a message.
+     */
     public void testConnections()
     {
         List<ClientThread> threadsToRemove = new LinkedList<ClientThread>();
         for (ClientThread ct : clientThreads)
         {
-
             try
             {
                 // if sending message does not cause exception, then connection is still active
                 ct.streamOut.writeUTF("ping");
-                
             }
             catch (Exception e)
             {
-                // exception when sending a message to the client, meaing the connection is not active. Start to remove.
+                // exception when sending a message to the client, meaning the connection is not active. Start to remove.
                 try
                 {
                     //TODO - how to nicely destroy socket listening thread.
@@ -105,13 +99,10 @@ public class ClientManager extends Thread
                     threadsToRemove.add(ct);
                 } catch (IOException e1)
                 {
-                    // TODO Auto-generated catch block
+                    // exception caused by trying to close streams
                     e1.printStackTrace();
                 }
-
-
             }
-
         }
 
         if (threadsToRemove.size() > 0)
@@ -126,10 +117,13 @@ public class ClientManager extends Thread
         else
         {// no threads to remove
             server.addNotification("All connection are active. Conneciton count is "+clientThreads.size());
-
         }
     }
 
+    /**
+     * Processes reading sent as a string message, and creates a reading object.
+     * @param message
+     */
     protected void makeReading(String message)
     {
         Reading reading = new Reading(message);

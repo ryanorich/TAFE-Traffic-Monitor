@@ -23,14 +23,14 @@
 		<padding>
 			<Insets top="10" bottom="10" right="10" left="10" />
 		</padding>
-
+       
 		<Label text="Monitoring Station" />
 		<HBox spacing="10">
-			<VBox>
+			<VBox  >
 				<Label text="Traffic Monitoring Data" />
 
 
-				<TableView fx:id="tbvRecords" editable="false">
+				<TableView fx:id="tbvRecords" editable="false" VBox.vgrow="ALWAYS">
 					<columns>
 						<TableColumn text="Time" sortable="false"
 							resizable="false">
@@ -44,14 +44,13 @@
 						<TableColumn text="Av.Velocity" sortable="false"
 							resizable="false" />
 					</columns>
-
 				</TableView>
-
 
 				<Region prefHeight="10" />
 				<Label text="Sort By:" />
 				<HBox>
 					<Button text="Time" onAction="#btnSortByTime" />
+					<Button text="Location" onAction="#btnSortByLocation" />
 					<Button text="No. Vehicles" onAction="#btnSortByVehicles" />
 					<Button text="Velocity" onAction="#btnSortByVelocity" />
 
@@ -64,7 +63,7 @@
 
 				</HBox>
 			</VBox>
-			<VBox>
+			<VBox fillWidth="true">
 				<Label text="Notificatinos" />
 
 				<TextArea fx:id="txaNotifications" VBox.vgrow="ALWAYS" />

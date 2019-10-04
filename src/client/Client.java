@@ -26,9 +26,7 @@ public class Client extends Application
     ServerListener listener = null;
     int location = 0;
     ClientController controller;
-    //String server = "localhost";
-    //int port = 8888;
-    Connection serverCon = new Connection("localhost", 8888);
+    Connection serverConnection = new Connection("localhost", 8888);
 
     public boolean isConnected = false;
 
@@ -59,13 +57,13 @@ public class Client extends Application
     /**
      * Creates a socket connection to the specified server
      * 
-     * @return true if conected and able to send a message
+     * @return true if connected and able to send a message
      */
     public boolean connectToServer()
     {
         try
         {
-            socket = new Socket(serverCon.server, serverCon.port);
+            socket = new Socket(serverConnection.server, serverConnection.port);
             in = new DataInputStream(socket.getInputStream());
             out = new DataOutputStream(socket.getOutputStream());
             Runnable listener = new ServerListener();

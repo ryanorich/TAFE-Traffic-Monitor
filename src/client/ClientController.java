@@ -326,7 +326,7 @@ public class ClientController
                 e1.printStackTrace();
             }
             ConnectionDialogController controller = (ConnectionDialogController) loader.getController();
-            controller.passConnection(client.serverCon);
+            controller.passConnection(client.serverConnection);
 
             Scene scene = new Scene(root);
             Stage stage = new Stage();
@@ -335,16 +335,16 @@ public class ClientController
             stage.setOnCloseRequest(e1 -> stage.close());
             stage.showAndWait();
 
-            if (controller.OK)
-            {
+            if (controller.isValidConnection)
+            {// details entered, and are OK
                 if (client.connectToServer())
-                {
+                {// connected OK
                     btnConnect.setText("Disconnect");
-                    stbStatus.setText("Connected to " + client.serverCon);
+                    stbStatus.setText("Connected to " + client.serverConnection);
                     btnSubmit.setDisable(false);
                     client.isConnected = true;
                 } else
-                {
+                {// exception raised during connection
                     stbStatus.setText("Connection Failed!");
                     client.isConnected = false;
                 }
@@ -374,7 +374,7 @@ public class ClientController
 
     /**
      * Passes a reference to the Client instance that creats the GUI.
-     * @param client Refrence to the Client instance
+     * @param client Reference to the Client instance
      */
     protected void passReference(Client client)
     {

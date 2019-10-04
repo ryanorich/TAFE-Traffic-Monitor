@@ -12,8 +12,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
+import org.json.simple.*;
+//import org.json.simple.JSONObject;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -42,7 +42,7 @@ public class Server extends Application
 {
     enum sortOrder
     {
-        TIME, VEHICLES, VELOCITY
+        TIME, VEHICLES, VELOCITY, LOCATION
     };
 
     private ArrayList<RRCompare<Reading>> SortOrderComparitors = new ArrayList<RRCompare<Reading>>();
@@ -51,7 +51,7 @@ public class Server extends Application
     private RRBinaryTree<Reading> BTReadings;
     
     protected Stage stage;
-    // Access for the Server Controller
+    // access for the Server Controller
     ServerController serverController;
     
     private int port = 8888;
@@ -110,15 +110,15 @@ public class Server extends Application
         this.stage = stage;
         stage.setTitle("Traffic Monitor");
 
-        // Creating and instance of the loader
+        // creating and instance of the loader
         FXMLLoader loader = new FXMLLoader(getClass().getResource("Server.fxml"));
-        // Loading the fxml resources, and attachign to new pane
+        // loading the fxml resources, and attaching to new pane
         Pane root = loader.load();
 
-        // Grabs the Server Controller
+        // grab the Server Controller
         serverController = (ServerController) loader.getController();
 
-        // standard stag setup
+        // standard stage setup
         Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
@@ -131,10 +131,8 @@ public class Server extends Application
 
         // set up the rules for sorting
         populateSortOrderCompariotors(SortOrderComparitors);
-        // generate sme initial data, for testing.
-        //populateDummyData(readings);
-
-        // prime the Server Controller
+        
+        // initialise the Server Controller
         serverController.setupReadings(readings);
         serverController.DiplayLinkedList(LLReadings);
         serverController.passReference(this);
@@ -142,7 +140,10 @@ public class Server extends Application
         networkingSetup();
     }
 
-    
+    /**
+     * Shows notification for the server connection address, and starts the Server Socket listener
+     * @throws UnknownHostException
+     */
     void networkingSetup() throws UnknownHostException
     {
         
@@ -151,13 +152,12 @@ public class Server extends Application
                                          "Server Name:\t"+ inetAddress.getHostName() + "\n" + 
                                          "Server IP:  \t"+ inetAddress.getHostAddress() + "\n" +  
                                          "Server Port:\t"+ port + "\n");
-        
         clientManager.start();
     }
     
 
     /**
-     * Crates the various rules for sorting the readigns list
+     * Crates the various rules for sorting the reading list
      * 
      * @param soc List of Sort Order Comparitors to be populated
      */
@@ -166,17 +166,16 @@ public class Server extends Application
         soc.add(null);
         soc.set(sortOrder.TIME.ordinal(), (a, b) ->
         {
-
             int ret = a.getTime().compareTo(b.getTime());
             if (ret == 0)
             {
-                // TODO - Secondary Search
-                return 0;
+                int al = a.getLocation(), bl=b.getLocation();
+                
+                return al == bl ? 0 : al < bl ? -1: 1;
             } else
             {
                 return ret;
             }
-            // return 0;
         });
 
         soc.add(null);
@@ -187,7 +186,7 @@ public class Server extends Application
             int ret = an == bn ? 0 : (an > bn ? 1 : -1);
             if (ret == 0)
             {
-                // TODO - Secondary Search
+                // secondary sort - not implemented for Vehicles
                 return 0;
             } else
             {
@@ -201,14 +200,30 @@ public class Server extends Application
             int av = a.getAverageVelocity(), bv = b.getAverageVelocity();
 
             if (av == bv)
-            { // TODO - secondary sort here.
-                return 0;
+            { 
+                return a.getTime().compareTo(b.getTime());
             } else
             {
                 return av > bv ? 1 : -1;
             }
 
         });
+        
+        soc.add(null);
+        soc.set(sortOrder.LOCATION.ordinal(), (a, b) ->
+        {
+            int an = a.getLocation(), bn = b.getLocation();
+
+            int ret = an == bn ? 0 : (an > bn ? 1 : -1);
+            if (ret == 0)
+            {
+                return a.getTime().compareTo(b.getTime());
+            } else
+            {
+                return ret;
+            }
+        });
+        
         // Borrowing the comaparitor used for sorting by velocity for the Binary Tree
         BTReadings = new RRBinaryTree<Reading>(soc.get(sortOrder.VELOCITY.ordinal()));
 
@@ -229,6 +244,10 @@ public class Server extends Application
         addReading(r);
     }
     
+    /**
+     * Populates the various data structures with a reading, and updates the display
+     * @param r
+     */
     protected void addReading(Reading r)
     {
         readings.add(r);
@@ -241,6 +260,7 @@ public class Server extends Application
         serverController.updateTable(readings);
         serverController.DiplayLinkedList(LLReadings);
         serverController.DisplayBinaryTree(BTReadings);
+        serverController.updateTree();
         
     }
 
@@ -261,6 +281,9 @@ public class Server extends Application
             st = sortType.SELECTION;
             break;
         case VELOCITY:
+            st = sortType.BUBBLE;
+            break;
+        case LOCATION:
             st = sortType.BUBBLE;
             break;
         default:

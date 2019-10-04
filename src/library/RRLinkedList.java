@@ -111,12 +111,10 @@ public class RRLinkedList<T>
                 {
                     current = current.next;
                 }
-
                 current.previous.next = node;
                 node.previous = current.previous;
                 node.next = current;
                 current.previous = node;
-
             }
         }
         count++;
@@ -206,7 +204,7 @@ public class RRLinkedList<T>
     }
 
     /**
-     * For Debugging - Prints all objects int he list in order Requires objects to
+     * For Debugging - Prints all objects in he list in order Requires objects to
      * implement .toString(), or otherwise be able to be printed.
      */
     public void printList()

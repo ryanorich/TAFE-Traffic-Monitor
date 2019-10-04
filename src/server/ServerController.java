@@ -14,7 +14,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 import library.RRBinaryTree;
 import library.RRLinkedList;
@@ -34,6 +33,8 @@ public class ServerController
     private Server server;
     public int test;
     ObservableList<Reading> dispalyReadings;
+    private Stage treeStage = null;
+    TreeDisplayController treeDisplayController = null;
 
     @FXML
     private TableView<Reading> tbvRecords;
@@ -48,7 +49,7 @@ public class ServerController
     private void btnSortByTime(ActionEvent e)
     {
         
-        txaNotifications.appendText("Sorting by Time\n");
+        txaNotifications.appendText("Sorting by Time, Location\n");
         server.sortReadings(sortOrder.TIME);
     }
 
@@ -56,7 +57,7 @@ public class ServerController
     private void btnSortByVehicles(ActionEvent e)
     {
         
-        txaNotifications.appendText("Sorting by Location\n");
+        txaNotifications.appendText("Sorting by total number of Vehicles\n");
         server.sortReadings(sortOrder.VEHICLES);
 
     }
@@ -64,8 +65,15 @@ public class ServerController
     @FXML
     private void btnSortByVelocity(ActionEvent e)
     {
-        txaNotifications.appendText("Sorting by Velocity\n");
+        txaNotifications.appendText("Sorting by Average Velocity, Time\n");
         server.sortReadings(sortOrder.VELOCITY);
+    }
+    
+    @FXML
+    private void btnSortByLocation()
+    {
+        txaNotifications.appendText("Sorting by Location, Time\n");
+        server.sortReadings(sortOrder.LOCATION);
     }
 
     @FXML
@@ -105,31 +113,55 @@ public class ServerController
 
         server.saveJson(server.getBinaryTree().getPostOrder());
     }
+    
+    protected void updateTree()
+    {
+        if (treeStage != null )
+        {// If the tree display has been created
+            if (treeStage.isShowing())
+            {// and if it has not been closed
+                // update the tree display
+               treeDisplayController.drawTree(server.getIndexedBinaryTree());
+            }
+        }
+    }
 
     @FXML
     private void btnDiagram(ActionEvent e) throws IOException
     {
+        if (treeStage != null )
+        {// If the tree display has been created
+            if (treeStage.isShowing())
+            {// and if it has not been closed
+                // update the tree display
+               treeDisplayController.drawTree(server.getIndexedBinaryTree());
+               return;
+            }
+            
+        }
 
         //txaBinaryTree.appendText("Showing Diagram\n");
         // Application.launch(testing.TestingCharts.class, new String[] {});
 
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("TreeDisplay.fxml"));
         Parent parent = fxmlLoader.load();
-        TreeDisplayController treeDisplayController = fxmlLoader.<TreeDisplayController>getController();
+        treeDisplayController = fxmlLoader.<TreeDisplayController>getController();
         // treeDisplayController.setAppMainObservableList(tvObservableList);
 
         // treeDisplayController.showTree();
         
-        Scene scene2 = new Scene(parent, 300, 200);
-        Stage stage2 = new Stage();
+        Scene treeScene = new Scene(parent, 300, 200);
+        treeStage = new Stage();
         
-
-        treeDisplayController.initiliseData(server.getIndexedBinaryTree());
+        System.out.println(treeDisplayController);
+        treeDisplayController.drawTree(server.getIndexedBinaryTree());
         
-        stage2.initModality(Modality.APPLICATION_MODAL);
-        stage2.setScene(scene2);
-        stage2.showAndWait();
-
+        //treeStage.initModality(Modality.APPLICATION_MODAL);
+        treeStage.setScene(treeScene);
+        treeStage.show();
+        
+        
+        System.out.println(treeDisplayController);
     }
 
     /**
@@ -195,10 +227,7 @@ public class ServerController
         {
             btnDBGAddReading();
         }
-
     }
-
-
 
     /**
      * Displays reading data in a linked list
@@ -242,8 +271,8 @@ public class ServerController
             }
             txaBinaryTree.appendText(str);
         }
+        
         txaBinaryTree.appendText("\nPreOrder\t\t: ");
-
         list = rrBT.getPreOrder();
         if (list.size() > 0)
         {
@@ -258,7 +287,6 @@ public class ServerController
         }
 
         txaBinaryTree.appendText("\nPostOrder\t: ");
-
         list = rrBT.getPostOrder();
         if (list.size() > 0)
         {

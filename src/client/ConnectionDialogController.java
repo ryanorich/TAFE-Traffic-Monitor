@@ -22,7 +22,8 @@ public class ConnectionDialogController
 {
     Connection serverConn;
     
-    Boolean OK = false;
+    // stores the result of a successful validation
+    Boolean isValidConnection = false;
     
     @FXML private TextField txfServer;
     @FXML private TextField txfPort;
@@ -36,6 +37,7 @@ public class ConnectionDialogController
         
         Decorator.removeAllDecorations(txfServer);
         Decorator.removeAllDecorations(txfPort);
+        
         //Regex Reference - https://stackoverflow.com/questions/106179/regular-expression-to-match-dns-hostname-or-ip-address
         if (Pattern.matches("^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$",txfServer.getText()) 
                 || Pattern.matches("^([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\\-]{0,61}[a-zA-Z0-9])(\\.([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\\-]{0,61}[a-zA-Z0-9]))*$", txfServer.getText()))
@@ -71,12 +73,10 @@ public class ConnectionDialogController
         
         if (isValid == true)
         {
-            OK=true;
+            isValidConnection=true;
             Stage stage = (Stage) btnConnCancel.getScene().getWindow();
             stage.close();
         }
-        
-  
     }
     
     /**
