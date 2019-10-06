@@ -20,9 +20,11 @@ public class TestingRRArrays
     public static void main(String[] args)
     {
         new TestingRRArrays();
-
     }
 
+    /**
+     * Constructor containign testing routines for RRArrays sorting algorithms.
+     */
     TestingRRArrays()
     {
         System.out.println("Testing RRArrays array sorting");
@@ -56,11 +58,15 @@ public class TestingRRArrays
         System.out.println("\nTesting INSERT:");
         System.out.println("Input    : " + in1);
 
-        // Using streight lambda expressions
+        // comparitors implemented using lambda expressions
+        
+        // compares integer component of TestClass
         ArrayList<TestClass> out1a = library.AllSorts.RRSort(in1, AllSorts.sortType.INSERT,
 
                 (a, b) -> ((TestClass) a).i == ((TestClass) b).i ? 0
                         : (((TestClass) a).i > ((TestClass) b).i ? 1 : -1));
+        
+     // compares string component of TestClass
         ArrayList<TestClass> out1b = library.AllSorts.RRSort(in1, AllSorts.sortType.INSERT,
 
                 (a, b) -> ((TestClass) a).s.compareTo(((TestClass) b).s));
@@ -69,7 +75,7 @@ public class TestingRRArrays
         System.out.println("Output 2 : " + out1b);
         System.out.println("Input    : " + in1);
 
-        // Using comparison objects
+        // comparitors implemented using lambda objects
         RRCompare<TestClass> cmp1 = (a, b) -> a.i == b.i ? 0 : a.i > b.i ? 1 : -1;
         RRCompare<TestClass> cmp2 = (a, b) -> a.s.compareTo(b.s);
 
@@ -83,7 +89,13 @@ public class TestingRRArrays
         System.out.println("Output 2 : " + out2b);
         System.out.println("Input    : " + in2);
 
-        // Implementing using classes that implement the c ompare function
+        // comparitors implemented using classes that use the RRCompare interface and the compare function
+        /**
+         * Comparitor used for testing - compares based only on integer
+         * component of TestClass.
+         * @author Ryan Rich
+         *
+         */
         class cmp3a implements RRCompare<TestClass>
         {
             public int compare(TestClass a, TestClass b)
@@ -91,7 +103,13 @@ public class TestingRRArrays
                 return (a.i == b.i ? 0 : a.i > b.i ? 1 : -1);
             };
         }
-
+        
+        /**
+         * Comparitor used for testing - compares based only on string
+         * component of TestClass.
+         * @author ryan
+         *
+         */
         class cmp3b implements RRCompare<TestClass>
         {
             public int compare(TestClass a, TestClass b)

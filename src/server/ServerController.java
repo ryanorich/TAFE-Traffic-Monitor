@@ -31,7 +31,7 @@ public class ServerController
 {
 
     private Server server;
-    public int test;
+    //public int test;
     ObservableList<Reading> dispalyReadings;
     private Stage treeStage = null;
     TreeDisplayController treeDisplayController = null;
@@ -46,7 +46,7 @@ public class ServerController
     private TextArea txaBinaryTree;
 
     @FXML
-    private void btnSortByTime(ActionEvent e)
+    private void btnSortByTime()
     {
         
         txaNotifications.appendText("Sorting by Time, Location\n");
@@ -54,7 +54,7 @@ public class ServerController
     }
 
     @FXML
-    private void btnSortByVehicles(ActionEvent e)
+    private void btnSortByVehicles()
     {
         
         txaNotifications.appendText("Sorting by total number of Vehicles\n");
@@ -63,7 +63,7 @@ public class ServerController
     }
 
     @FXML
-    private void btnSortByVelocity(ActionEvent e)
+    private void btnSortByVelocity()
     {
         txaNotifications.appendText("Sorting by Average Velocity, Time\n");
         server.sortReadings(sortOrder.VELOCITY);
@@ -77,14 +77,14 @@ public class ServerController
     }
 
     @FXML
-    private void btnPollStations(ActionEvent e)
+    private void btnPollStations()
     {
         AddNotification("Polling Stations");
         server.testClientConnections();
     }
 
     @FXML
-    private void btnClearNotifications(ActionEvent e)
+    private void btnClearNotifications()
     {
         txaNotifications.setText("");
     }
@@ -95,20 +95,20 @@ public class ServerController
     }
 
     @FXML
-    private void btnSaveInOrder(ActionEvent e)
+    private void btnSaveInOrder()
     {
 
         server.saveJson(server.getBinaryTree().getInOrder());
     }
     @FXML
-    private void btnSavePreOrder(ActionEvent e)
+    private void btnSavePreOrder()
     {
 
         server.saveJson(server.getBinaryTree().getPreOrder());
     }
 
     @FXML
-    private void btnSavePostOrder(ActionEvent e)
+    private void btnSavePostOrder()
     {
 
         server.saveJson(server.getBinaryTree().getPostOrder());
@@ -127,7 +127,7 @@ public class ServerController
     }
 
     @FXML
-    private void btnDiagram(ActionEvent e) throws IOException
+    private void btnDiagram() throws IOException
     {
         if (treeStage != null )
         {// If the tree display has been created

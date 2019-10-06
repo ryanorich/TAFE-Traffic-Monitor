@@ -17,6 +17,6 @@ public class TestClass
     }
     public String toString()
     {
-        return "~" + i + "~" + s + "~";
+        return  i + "~" + s ;
     }
 }
