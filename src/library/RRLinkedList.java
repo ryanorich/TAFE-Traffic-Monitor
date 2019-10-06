@@ -188,19 +188,33 @@ public class RRLinkedList<T>
     public void set(int n, T t)
     {
         if (n < 0 || n >= count)
-        {
+        {// n is out or range
             return;
         }
+        
         LLNode<T> node = new LLNode<T>(t);
         LLNode<T> current = head;
+        if (n == 0)
+        {// setting the value of the head element
+            head = node;
+        }
+        else
+        {// step forward to get element
         for (int i = 0; i < n; i++)
         {
             current = current.next;
         }
-        node.previous = current.previous;
-        node.next = current.next;
-        node.previous.next = node;
-        node.next.previous = node;
+        }
+        if (n > 0)
+        {// previous node exists.
+            node.previous = current.previous;
+            current.previous.next = node;
+        }
+        if (n < count-1)
+        { // next node exists
+            node.next = current.next;
+            current.next.previous = node;
+        }
     }
 
     /**
