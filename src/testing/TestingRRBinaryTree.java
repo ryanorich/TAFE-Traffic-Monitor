@@ -69,7 +69,15 @@ public  class TestingRRBinaryTree
         System.out.println("PreOrder : "+rrBT.getPreOrder());
         System.out.println("PostOrder: "+rrBT.getPostOrder());
         System.out.println("Indexed  : "+rrBT.getIndexed());
-
+        
+        System.out.println("\nTesting for search");
+        tc = getRandom();
+        System.out.println("Inserting : "+tc);
+        rrBT.add(tc);
+        System.out.println("Retrieved when searching for "+tc+" : "+rrBT.search(tc));
+        tc = getRandom();
+        System.out.println("Not inserting");
+        System.out.println("Retrieved when searching for "+tc+" : "+rrBT.search(tc));
     }
     
     /**

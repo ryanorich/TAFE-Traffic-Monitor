@@ -348,6 +348,59 @@ public class RRBinaryTree<T>
         }
     }
     
+    
+    public T search(T t)
+    {
+        BTNode<T> searchNode = new BTNode<T>(t);
+        BTNode<T> result = _search(head, searchNode);
+        if (result == null)
+        {
+            return null;
+        }
+        else
+        {
+            return (T) result.t;
+        }
+    }
+    
+    private BTNode<T> _search(BTNode<T> current, BTNode<T> searchNode)
+    {
+        int comparison = cmp.compare((T)current.t, (T)searchNode.t);
+        
+        if (comparison == 0)
+        {// Found the correct node
+            return current;
+        }
+        else if (comparison < 0)
+        {// Current is less than search, go right
+            if (current.right != null)
+            {
+                return _search(current.right, searchNode);
+            }
+            else
+            {// Null value to right - value cannot be found
+                return null;
+            }
+            
+        }
+        else
+        { // Current is greater than search - Go left
+            if (current.left != null)
+            {
+                return _search(current.left, searchNode);
+            }
+            else
+            {// Null value to right - value cannot be found
+                return null;
+            }
+        }
+       
+        
+        //Fall Through - null;
+        //return null;
+        
+    }
+    
     /**
      * Tree node, containing an object, and links to left/right nodes.
      * 
