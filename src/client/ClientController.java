@@ -200,7 +200,6 @@ public class ClientController
                 Tooltip.install(tri, tt);
                 Decorator.addDecoration(txfLocation, new GraphicDecoration(tri, Pos.TOP_LEFT));
             }
-            loc = client.location;
         }
 
         if (Pattern.matches("^(?!0+$)\\d+$", txfNoOfLanes.getText()))
@@ -235,9 +234,11 @@ public class ClientController
             if (tnv == 0 || nolns == 0)
             { // Either no vehicles, or an error in number of lanes.
                 anv = 0;
+                txfAverageNoOfVehicles.setText("0");
             } else
             {
                 anv = tnv / nolns;
+                txfAverageNoOfVehicles.setText(""+anv);
             }
         } else
         { // Manual Entry

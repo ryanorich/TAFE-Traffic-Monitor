@@ -55,7 +55,6 @@ public class TreeDisplayController
         // Adding Lines
         // Since leaves have no decentants, only need to check up to the first node on
         // the deepest level, which is as 2^depth-1
-        //int maxIndex = intPow(2, MAXDEPTH) - 1, j;
         int j;
         // Start at each node
         for (int i = 0; i < MAXINDEX; i++)

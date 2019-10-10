@@ -6,7 +6,6 @@ import java.util.List;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -153,15 +152,11 @@ public class ServerController
         Scene treeScene = new Scene(parent, 300, 200);
         treeStage = new Stage();
         
-        System.out.println(treeDisplayController);
         treeDisplayController.drawTree(server.getIndexedBinaryTree());
         
         //treeStage.initModality(Modality.APPLICATION_MODAL);
         treeStage.setScene(treeScene);
         treeStage.show();
-        
-        
-        System.out.println(treeDisplayController);
     }
 
     /**

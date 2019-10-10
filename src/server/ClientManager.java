@@ -127,6 +127,8 @@ public class ClientManager extends Thread
     protected void makeReading(String message)
     {
         Reading reading = new Reading(message);
+        
+        
         server.addReading(reading);
     }
 }
